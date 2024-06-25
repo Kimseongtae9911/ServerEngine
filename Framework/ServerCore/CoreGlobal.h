@@ -2,10 +2,6 @@
 
 extern class ThreadManager* GThreadManager;
 
-class CoreGlobal
-{
-public:
-	CoreGlobal();
-	~CoreGlobal();
-};
-
+#if _DEBUG
+extern class DeadLockProfiler* GDeadLockProfiler;
+#endif
