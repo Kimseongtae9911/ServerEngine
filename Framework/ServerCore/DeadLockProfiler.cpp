@@ -30,6 +30,8 @@ void DeadLockProfiler::PushLock(const std::string _name)
 			}
 		}
 	}
+
+	m_lockStack.push(lockId);
 }
 
 void DeadLockProfiler::PopLock(const std::string _name)

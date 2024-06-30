@@ -24,7 +24,15 @@ public:
 	static void		Release(void* _ptr);
 };
 
-
+/*
+	MemoryPool에서 사용하는 Allocator
+*/
+class PoolAllocator
+{
+public:
+	static void*	Alloc(int32 _size);
+	static void		Release(void* _ptr);
+};
 
 template<typename T>
 class StlAllocator

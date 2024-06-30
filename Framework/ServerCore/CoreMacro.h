@@ -19,8 +19,8 @@
 	  Memory
 ----------------*/
 #ifdef _DEBUG
-#define stalloc(size) StompAllocator::Alloc(size)
-#define strelease(ptr) StompAllocator::Release(ptr)
+#define stalloc(size) PoolAllocator::Alloc(size)
+#define strelease(ptr) PoolAllocator::Release(ptr)
 #else
 #define stalloc(size) BaseAllocator::Alloc(size)
 #define strelease(ptr) BaseAllocator::Release(ptr)

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Allocator.h"
+#include "MemoryManager.h"
 
 void* BaseAllocator::Alloc(int32 _size)
 {
@@ -41,4 +42,18 @@ void StompAllocator::Release(void* _ptr)
 #else
 	munmap(reinterpret_cast<void*>(baseAddress), PAGE_SIZE);
 #endif
+}
+
+/*---------------------
+	 PoolAllocator
+---------------------*/
+
+void* PoolAllocator::Alloc(int32 _size)
+{
+	return GMemoryManager->Allocate(_size);
+}
+
+void PoolAllocator::Release(void* _ptr)
+{
+	GMemoryManager->Release(_ptr);
 }
