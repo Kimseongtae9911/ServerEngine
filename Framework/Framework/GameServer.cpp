@@ -5,6 +5,7 @@
 #include "ThreadManager.h"
 #include "Memory.h"
 
-int main() {
-
+int main() 
+{
+	std::vector<int32, StlAllocator<int32>> v(100);
 }
