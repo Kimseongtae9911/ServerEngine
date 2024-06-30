@@ -2,6 +2,8 @@
 
 #define OUT
 
+#define _WINDOW _WIN32 | _WIN64
+
 /*----------------
 	  Lock
 ----------------*/
@@ -17,8 +19,8 @@
 	  Memory
 ----------------*/
 #ifdef _DEBUG
-#define stalloc(size) BaseAllocator::Alloc(size)
-#define strelease(ptr) BaseAllocator::Release(ptr)
+#define stalloc(size) StompAllocator::Alloc(size)
+#define strelease(ptr) StompAllocator::Release(ptr)
 #else
 #define stalloc(size) BaseAllocator::Alloc(size)
 #define strelease(ptr) BaseAllocator::Release(ptr)

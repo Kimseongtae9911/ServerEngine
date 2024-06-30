@@ -35,11 +35,11 @@ public:
 	TSharedPtr() {}
 	TSharedPtr(T* _ptr) { SetPtr(_ptr); }
 
-	TSharedPtr(const TSharedPtr& _rhs) { SetPtr(rhs.m_ptr); }
+	TSharedPtr(const TSharedPtr& _rhs) { SetPtr(_rhs.m_ptr); }
 	TSharedPtr(TSharedPtr&& _rhs) { m_ptr = _rhs.m_ptr; _rhs.m_ptr = nullptr; }
 
 	template<typename U>	// 상속 관계 복사
-	TSharedPtr(const TSharedPtr<U>& _rhs) { SetPtr(static_cast<T*>(_rhs.m_ptr); }
+	TSharedPtr(const TSharedPtr<U>& _rhs) { SetPtr(static_cast<T*>(_rhs.m_ptr)); }
 
 	~TSharedPtr() { Release(); }
 
@@ -60,10 +60,10 @@ public:
 	}
 
 	bool		operator==(const TSharedPtr& _rhs) const { return m_ptr == _rhs.m_ptr; }
-	bool		operator==(T* _ptr) const { return m_ptr == __ptr; }
+	bool		operator==(T* _ptr) const { return m_ptr == _ptr; }
 	bool		operator!=(const TSharedPtr& _rhs) const { return m_ptr == _rhs.m_ptr; }
 	bool		operator!=(T* _ptr) const { return m_ptr == _ptr; }
-	bool		operator<(const TSharedPtr& _rhs) const { return m_ptr < rhs.m_ptr; }
+	bool		operator<(const TSharedPtr& _rhs) const { return m_ptr < _rhs.m_ptr; }
 	T*			operator*() { return m_ptr; }
 	const T*	operator*() { return m_ptr; }
 				operator T*() const { return m_ptr; }
@@ -74,9 +74,9 @@ public:
 
 private:
 	void SetPtr(T* _ptr) {
-		m_ptr = ptr;
-		if (ptr)
-			ptr->AddRef();
+		m_ptr = _ptr;
+		if (_ptr)
+			_ptr->AddRef();
 	}
 
 	void Release() {
