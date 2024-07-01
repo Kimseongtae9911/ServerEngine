@@ -9,28 +9,66 @@ class Knight
 {
 public:
 	Knight() {
-		std::cout << "Knight()" << std::endl;
+		//std::cout << "Knight()" << std::endl;
 	}
 
 	~Knight() {
-		std::cout << "~Knight()" << std::endl;
+		//std::cout << "~Knight()" << std::endl;
 	}
 };
 
-int main() 
+uint64 numIterations = 100;
+
+void TestCustomAllocator()
 {
-	for (int32 i = 0; i < 5; ++i) {
-		GThreadManager->RunThreads([]() {
-			while (true) {
-				StVector<Knight> v(10);
+    for (int32 i = 0; i < 5; ++i) {
+        GThreadManager->RunThreads([]() {
+            for (int j = 0; j < numIterations; ++j) {
+                StVector<Knight> v(10);
+                StMap<int32, Knight> m;
+                m[100] = Knight();
+            }
+            });
+    }
 
-				StMap<int32, Knight> m;
-				m[100] = Knight();
+    GThreadManager->JoinThreads();
+}
 
-				std::this_thread::sleep_for(TimeMS(10));
-			}
-			});
-	}
-	
-	GThreadManager->JoinThreads();
+void TestSTLAllocator()
+{
+    for (int32 i = 0; i < 5; ++i) {
+        GThreadManager->RunThreads([]() {
+            for (int j = 0; j < numIterations; ++j) {
+                std::vector<Knight> v(10);
+                std::map<int32, Knight> m;
+                m[100] = Knight();
+            }
+            });
+    }
+
+    GThreadManager->JoinThreads();
+}
+
+int main()
+{
+    for (int i = 0; i < 10; ++i) {
+        std::cout << "Test Case#" << std::to_string(i + 1) <<", AllocateNum : " << numIterations << std::endl;
+        std::cout << "Start Custom Allocator" << std::endl;
+        auto start = std::chrono::high_resolution_clock::now();
+        TestCustomAllocator();
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+        std::cout << "Custom Allocator Duration: " << duration.count() << " seconds" << std::endl;
+
+        std::cout << "Start STL Allocator" << std::endl;
+        start = std::chrono::high_resolution_clock::now();
+        TestSTLAllocator();
+        end = std::chrono::high_resolution_clock::now();
+        duration = end - start;
+        std::cout << "STL Allocator Duration: " << duration.count() << " seconds" << std::endl;
+        std::cout << "============================================================" << std::endl << std::endl;
+        numIterations *= 10;
+    }
+
+    return 0;
 }

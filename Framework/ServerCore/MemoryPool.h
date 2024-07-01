@@ -1,4 +1,5 @@
 #pragma once
+#include <tbb/concurrent_queue.h>
 
 /*
 	메모리의 크기, 다음 메모리의 힙 주소 등의 정보를 담은 헤더
@@ -37,9 +38,8 @@ public:
 
 private:
 	int32 m_allocSize = 0;	// 담당하고 있는 메모리 크기
-	std::atomic<int32> m_allocCount = 0;	// 메모리풀에서 관리 중인 메모리 개수
+	std::atomic<int32> m_allocCount = 0;	// 메모리풀에서 관리 중인 메모리 개수, 디버깅 없이 성능을 향상 시킨다면 제거
 
-	USE_LOCK;
-	std::queue<MemoryHeader*> m_memoryQueue;
+	tbb::concurrent_queue<MemoryHeader*> m_concurrentMemoryQueue;
 };
 
