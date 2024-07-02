@@ -16,6 +16,9 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{8e1cbf18-dcc6-41e3-b518-8918801c8b73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Memory\Object">
+      <UniqueIdentifier>{7227ceb5-239d-4deb-9251-f5bc7ea403be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CorePch.h">
@@ -60,6 +63,9 @@
     <ClInclude Include="MemoryPool.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Memory\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
@@ -94,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="MemoryPool.cpp">
       <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>Memory\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,7 +22,8 @@ void MemoryPool::PushMemory(MemoryHeader* _ptr)
 {
 	_ptr->allocSize = 0;
 	m_concurrentMemoryQueue.push(_ptr);
-	m_allocCount.fetch_sub(1);
+	m_useCount.fetch_sub(1);
+	m_reserveCount.fetch_add(1);
 }
 
 MemoryHeader* MemoryPool::PopMemory()
@@ -36,9 +37,10 @@ MemoryHeader* MemoryPool::PopMemory()
 	}
 	else {
 		ASSERT_CRASH(header->allocSize == 0);
+		m_reserveCount.fetch_sub(1);
 	}
 	
-	m_allocCount.fetch_add(1);
+	m_useCount.fetch_add(1);
 
 	return header;
 }

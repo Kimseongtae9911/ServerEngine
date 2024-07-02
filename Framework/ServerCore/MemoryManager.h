@@ -36,9 +36,9 @@ private:
 template<typename Type, typename... Args>
 Type* stnew(Args&&... args) {
 	//메모리 할당
-	Type* memory = static_cast<Type*>(BaseAllocator::Alloc(sizeof(Type)));
+	Type* memory = static_cast<Type*>(PoolAllocator::Alloc(sizeof(Type)));
 
-	//생성자 호출
+	//생성자 호출S
 	new(memory)Type(std::forward<Args>(args));
 	return memory;
 }
@@ -49,5 +49,14 @@ void stdelete(Type* _obj) {
 	_obj->~Type();
 
 	//메모리 반납
-	BaseAllocator::Release(_obj);
+	PoolAllocator::Release(_obj);
+}
+
+/*
+	오브젝트풀은 사용하지 않고 메모리풀만 사용하여 오브젝트 생성할 때
+*/
+template<typename Type>
+std::shared_ptr<Type> CreateSharedObj()
+{
+	return std::shared_ptr<Type>{stnew<Type>(), stdelete<Type>};
 }

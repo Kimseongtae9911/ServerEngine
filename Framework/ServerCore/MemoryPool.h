@@ -37,8 +37,9 @@ public:
 	MemoryHeader* PopMemory();
 
 private:
-	int32 m_allocSize = 0;	// 담당하고 있는 메모리 크기
-	std::atomic<int32> m_allocCount = 0;	// 메모리풀에서 관리 중인 메모리 개수, 디버깅 없이 성능을 향상 시킨다면 제거
+	int32 m_allocSize = 0;					// 담당하고 있는 메모리 크기
+	std::atomic<int32> m_useCount = 0;		// 메모리풀에서 관리 중인 메모리 개수(사용중), 디버깅 없이 성능을 향상 시킨다면 제거
+	std::atomic<int32> m_reserveCount = 0;	// 메모리풀에 저장된 개수(대기중)
 
 	tbb::concurrent_queue<MemoryHeader*> m_concurrentMemoryQueue;
 };

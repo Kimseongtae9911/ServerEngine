@@ -26,6 +26,9 @@
 #define strelease(ptr) BaseAllocator::Release(ptr)
 #endif
 
+// 메모리 디버깅 시 활성화
+//#define _STOMP
+
 /*----------------
 	  Crash
 ----------------*/
