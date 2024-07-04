@@ -66,6 +66,9 @@
     <ClInclude Include="ObjectPool.h">
       <Filter>Memory\Object</Filter>
     </ClInclude>
+    <ClInclude Include="TypeCast.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
