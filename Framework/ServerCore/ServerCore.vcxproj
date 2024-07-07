@@ -82,13 +82,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Lib\tbb\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\tbb\lib\intel64\vc14;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Lib\tbb\include;$(SolutionDir)Lib;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Lib\tbb\lib\intel64\vc14;$(SolutionDir)Lib\CommonLib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Lib\tbb\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\tbb\lib\intel64\vc14;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Lib\tbb\include;$(SolutionDir)Lib;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Lib\tbb\lib\intel64\vc14;$(SolutionDir)Lib\CommonLib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
