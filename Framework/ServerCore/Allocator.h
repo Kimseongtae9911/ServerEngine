@@ -50,10 +50,10 @@ public:
 
 	T* allocate(size_t _count) {
 		const int32 size = static_cast<int32>(_count * sizeof(T));
-		return static_cast<T*>(stalloc(size));
+		return static_cast<T*>(PoolAllocator::Alloc(size));
 	}
 
 	void deallocate(T* ptr, size_t count) {
-		strelease(ptr);
+		PoolAllocator::Release(ptr);
 	}
 };

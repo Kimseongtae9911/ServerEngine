@@ -32,3 +32,9 @@ using LockGuard = std::lock_guard<std::mutex>;
 --------------*/
 using TimeMS = std::chrono::milliseconds;
 using TimeSec = std::chrono::seconds;
+
+
+/*--------------
+	 Boost
+--------------*/
+using tcpSocket = boost::asio::ip::tcp::socket;

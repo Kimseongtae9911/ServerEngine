@@ -19,6 +19,12 @@
     <Filter Include="Memory\Object">
       <UniqueIdentifier>{7227ceb5-239d-4deb-9251-f5bc7ea403be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\Session">
+      <UniqueIdentifier>{01c083a8-2d89-42b6-8d92-c0b02ceba16d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Interface">
+      <UniqueIdentifier>{953b9e6e-0518-4fb3-b1a4-9929356f7a38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CorePch.h">
@@ -69,6 +75,18 @@
     <ClInclude Include="TypeCast.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="SocketUtils.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkCore.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Network\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkInterface.h">
+      <Filter>Network\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
@@ -106,6 +124,15 @@
     </ClCompile>
     <ClCompile Include="ObjectPool.cpp">
       <Filter>Memory\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketUtils.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkCore.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Network\Session</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

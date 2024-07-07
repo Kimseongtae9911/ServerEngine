@@ -1,5 +1,4 @@
 #pragma once
-#include "Types.h"
 #include "MemoryPool.h"
 #include <tbb/concurrent_queue.h>
 
