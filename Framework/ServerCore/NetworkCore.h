@@ -1,13 +1,13 @@
 #pragma once
 #include "NetworkInterface.h"
 
-class NetworkCore : public NetworkObject
+class NetworkCore
 {
 public:
     NetworkCore();
     ~NetworkCore();
 
-    void RunObject() override;
+    void RunObject();
 
 private:
     void StartAccept();

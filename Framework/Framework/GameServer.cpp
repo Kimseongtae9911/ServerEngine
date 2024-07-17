@@ -5,12 +5,8 @@
 
 int main()
 {
-    for (int32 i = 0; i < 6; ++i) {
-        GThreadManager->RunThreads([]() {
-            NetworkCore server;
-            server.RunObject();
-            });
-    }
+    NetworkCore server;
+    server.RunObject();        
 
     GThreadManager->JoinThreads();    
 }

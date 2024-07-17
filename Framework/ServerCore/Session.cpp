@@ -2,9 +2,10 @@
 #include "NetworkInterface.h"
 #include "Session.h"
 
-Session::Session(tcpSocket _socket) : m_socket(std::move(_socket))
+Session::Session(tcpSocket _socket, boost::asio::io_context& _context) : m_socket(std::move(_socket)), m_strand(_context)
 {
 	m_recvBuffer.fill(0);
+	m_sendBuffer.fill(0);	
 }
 
 Session::~Session()
@@ -25,6 +26,27 @@ void Session::RunObject()
 
 		RunObject();
 		});
+}
+
+void Session::SendPacket(int8* _data, int32 _length)
+{
+	m_sendBuffer.fill(0);
+	std::memcpy(m_sendBuffer.data(), _data, _length);
+	OnSendPacket(_length);
+}
+
+void Session::OnSendPacket(int32 _length)
+{
+	auto self(shared_from_this());
+	boost::asio::async_write(m_socket, boost::asio::buffer(m_sendBuffer, _length),
+		boost::asio::bind_executor(m_strand,
+			[this, self](boost::system::error_code ec, std::size_t /*length*/) {
+				if (ec) {
+					//todo: 에러처리
+					OnDisconnected();
+					return;
+				}
+			}));
 }
 
 void Session::OnDisconnected()

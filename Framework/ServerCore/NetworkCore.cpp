@@ -2,6 +2,7 @@
 #include "NetworkCore.h"
 #include "Session.h"
 #include "SocketUtils.h"
+#include "ThreadManager.h"
 
 NetworkCore::NetworkCore() : m_acceptor(m_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 7777))
 {
@@ -18,14 +19,19 @@ NetworkCore::~NetworkCore()
 void NetworkCore::RunObject()
 {
 	StartAccept();
-	m_context.run();
+
+	for (int32 i = 0; i < 6; ++i) {
+		GThreadManager->RunThreads([this]() {
+			m_context.run();
+			});
+	}	
 }
 
 void NetworkCore::StartAccept()
 {
 	m_acceptor.async_accept([this](boost::system::error_code _err, tcpSocket _socket) {
 		if (!_err) {
-			std::make_shared<Session>(std::move(_socket))->RunObject();
+			std::make_shared<Session>(std::move(_socket), m_context)->RunObject();
 		}
 
 		StartAccept();
