@@ -1,7 +1,11 @@
 #pragma once
+#include "NetAddress.h"
 
 class SocketUtils
 {	
+public:
+	static bool InitAcceptor(std::shared_ptr<boost::asio::ip::tcp::acceptor> _acceptor, const NetAddress& _netAddress);
+
 public:
 	template<typename T>
 	static bool InitializeSocket(T& _socket, bool _lingerEnable = true, int32 _seconds = 10, bool _reuseEnable = true, int32 _recvSize = 65000, int32 _sendSize = 65000);

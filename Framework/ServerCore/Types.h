@@ -18,6 +18,11 @@ using uint32 = uint32_t;
 using uint64 = uint64_t;
 
 /*--------------
+	shared_ptr
+--------------*/
+using SessionRef = std::shared_ptr<class Session>;
+
+/*--------------
 	 Locks
 --------------*/
 template<typename T>

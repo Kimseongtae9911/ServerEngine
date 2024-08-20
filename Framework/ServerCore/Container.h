@@ -25,10 +25,10 @@ template<typename Type>
 using StList = std::list<Type, StlAllocator<Type>>;
 
 template<typename Key, typename Type, typename Pred = std::less<Key>>
-using StMap = std::map<Key, Type, Pred, StlAllocator<std::pair<const Key, Type>>>;
+using StMap = std::map<Key, Type, Pred, StlAllocator<std::pair<Key, Type>>>;
 
 template<typename Key, typename Pred = std::less<Key>>
-using StSet = std::set<Key, Pred, StlAllocator<const Key>>;
+using StSet = std::set<Key, Pred, StlAllocator<Key>>;
 
 template<typename Type>
 using StDeque = std::deque<Type, StlAllocator<Type>>;
@@ -46,7 +46,7 @@ using StString = std::basic_string<char, std::char_traits<char>, StlAllocator<ch
 using StWString = std::basic_string<wchar_t, std::char_traits<wchar_t>, StlAllocator<wchar_t>>;
 
 template<typename Key, typename Type, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
-using StUMap = std::unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<std::pair<const Key, Type>>>;
+using StUMap = std::unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<std::pair<Key, Type>>>;
 
 template<typename Key, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
 using StUSet = std::unordered_set<Key, Hasher, KeyEq, StlAllocator<Key>>;

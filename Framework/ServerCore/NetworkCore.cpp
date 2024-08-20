@@ -4,36 +4,23 @@
 #include "SocketUtils.h"
 #include "ThreadManager.h"
 
-NetworkCore::NetworkCore() : m_acceptor(m_context, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 7777))
+NetworkCore::NetworkCore()
 {
-	//todo: 소켓 옵션, 포트 등 설정필요
-	SocketUtils::InitializeSocket(m_acceptor);
 }
 
 NetworkCore::~NetworkCore()
 {
 	m_context.stop();
-	m_acceptor.close();
 }
 
 void NetworkCore::RunObject()
-{
-	StartAccept();
+{	
+	m_acceptor.StartAccpet(m_context, NetAddress(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 7777)));
+
 
 	for (int32 i = 0; i < 6; ++i) {
 		GThreadManager->RunThreads([this]() {
-			m_context.run();
+			m_context.run(); 
 			});
 	}	
-}
-
-void NetworkCore::StartAccept()
-{
-	m_acceptor.async_accept([this](boost::system::error_code _err, tcpSocket _socket) {
-		if (!_err) {
-			std::make_shared<Session>(std::move(_socket), m_context)->RunObject();
-		}
-
-		StartAccept();
-		});
 }

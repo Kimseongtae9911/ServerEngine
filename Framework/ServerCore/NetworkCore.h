@@ -1,5 +1,8 @@
 #pragma once
 #include "NetworkInterface.h"
+#include "Acceptor.h"
+
+class Session;
 
 class NetworkCore
 {
@@ -10,9 +13,6 @@ public:
     void RunObject();
 
 private:
-    void StartAccept();
-
-private:
     boost::asio::io_context m_context;
-    boost::asio::ip::tcp::acceptor m_acceptor;
+    Acceptor m_acceptor;
 };
