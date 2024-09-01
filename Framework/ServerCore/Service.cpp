@@ -2,8 +2,8 @@
 #include "Service.h"
 #include "Session.h"
 
-Service::Service(ServiceType _type, SessionFactory _factory, int32 _maxSessionCount)
-	: m_type(_type), m_sessionFactory(_factory), m_maxSessionCount(_maxSessionCount)
+Service::Service(ServiceType _type, const NetAddress& _netAddress, SessionFactory _sessionFactory, int32 _maxSessionCount)
+	: m_type(_type), m_netAddress(_netAddress), m_sessionFactory(_sessionFactory), m_maxSessionCount(_maxSessionCount)
 {
 }
 
@@ -15,17 +15,15 @@ void Service::CloseService()
 {
 }
 
-SessionRef Service::CreateSession()
+SessionRef Service::CreateSession(tcpSocket& _socket, boost::asio::io_context& _context)
 {
-	SessionRef session = m_sessionFactory();
-
-	//Register
-
-	return session;
+	return m_sessionFactory(std::move(_socket), _context);
 }
 
 void Service::AddSession(SessionRef _session)
 {
+	_session->SetService(shared_from_this());
+
 	WRITE_LOCK;
 	++m_sessionCount;
 	m_sessions.insert(_session);
@@ -42,12 +40,12 @@ void Service::ReleaseSession(SessionRef _session)
 /*---------------------
 	ClientService
 ---------------------*/
-ClientService::ClientService(SessionFactory _factory, int32 _maxSessionCount)
-	:Service(ServiceType::Client, _factory, _maxSessionCount)
+ClientService::ClientService(const NetAddress& _netAddress, SessionFactory _sessionFactory, int32 _maxSessionCount)
+	:Service(ServiceType::Client, _netAddress, _sessionFactory, _maxSessionCount)
 {
 }
 
-bool ClientService::ServiceStart()
+bool ClientService::ServiceStart(boost::asio::io_context& _context, int32 _count)
 {
 	return true;
 }
@@ -56,20 +54,21 @@ bool ClientService::ServiceStart()
 /*---------------------
 	ServerService
 ---------------------*/
-ServerService::ServerService(SessionFactory _factory, int32 _maxSessionCount)
-	: Service(ServiceType::Server, _factory, _maxSessionCount), m_acceptor(m_context)
+ServerService::ServerService(const NetAddress& _netAddress, SessionFactory _sessionFactory, int32 _maxSessionCount)
+	: Service(ServiceType::Server, _netAddress, _sessionFactory, _maxSessionCount)
 {
 }
 
-bool ServerService::ServiceStart()
+bool ServerService::ServiceStart(boost::asio::io_context& _context, int32 _count)
 {
-	if (false == CanStart())
-		return false;
+	m_acceptor = CreateSharedObj<Acceptor>();
+
+	m_acceptor->StartAccpet(_context, shared_from_this(), _count);
 
 	return true;
 }
 
 void ServerService::CloseService()
 {
-	ServerService::CloseService();
+	Service::CloseService();
 }

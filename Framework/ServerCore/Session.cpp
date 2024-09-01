@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "NetworkInterface.h"
 #include "Session.h"
+#include "Service.h"
 
 Session::Session(tcpSocket _socket, boost::asio::io_context& _context) : m_socket(std::move(_socket)), m_strand(_context)
 {
@@ -52,6 +53,9 @@ void Session::OnSendPacket(int32 _length)
 void Session::OnDisconnected()
 {
 	std::cout << "Disconnect" << std::endl;
+
+	m_service->ReleaseSession(shared_from_this());
+
 	if (m_socket.is_open()) {
 		boost::system::error_code ec;
 		m_socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);

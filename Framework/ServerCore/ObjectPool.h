@@ -68,8 +68,9 @@ template<typename Type>
 class ReuseObjectPool
 {
 public:
-	static std::shared_ptr<Type> MakeObject() {
-		return std::shared_ptr<Type>(PopObject(), PushObject);
+	template<typename... Args>
+	static std::shared_ptr<Type> MakeObject(Args&&... args) {
+		return std::shared_ptr<Type>(PopObject(std::forward<Args>(args)), PushObject);
 	}
 
 	//오브젝트풀을 초기화, 메모리풀은 유지

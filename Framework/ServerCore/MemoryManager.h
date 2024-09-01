@@ -39,7 +39,7 @@ Type* stnew(Args&&... args) {
 	Type* memory = static_cast<Type*>(PoolAllocator::Alloc(sizeof(Type)));
 
 	//생성자 호출S
-	new(memory)Type(std::forward<Args>(args));
+	new(memory)Type(std::forward<Args>(args)...);
 	return memory;
 }
 
@@ -55,8 +55,8 @@ void stdelete(Type* _obj) {
 /*
 	오브젝트풀은 사용하지 않고 메모리풀만 사용하여 오브젝트 생성할 때
 */
-template<typename Type>
-std::shared_ptr<Type> CreateSharedObj()
+template<typename Type, typename... Args>
+std::shared_ptr<Type> CreateSharedObj(Args&&... args)
 {
-	return std::shared_ptr<Type>{stnew<Type>(), stdelete<Type>};
+	return std::shared_ptr<Type>{stnew<Type>(std::forward<Args>(args)...), stdelete<Type>};
 }

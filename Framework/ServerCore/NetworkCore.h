@@ -14,5 +14,4 @@ public:
 
 private:
     boost::asio::io_context m_context;
-    Acceptor m_acceptor;
 };

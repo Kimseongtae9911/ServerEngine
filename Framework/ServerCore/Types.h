@@ -21,6 +21,7 @@ using uint64 = uint64_t;
 	shared_ptr
 --------------*/
 using SessionRef = std::shared_ptr<class Session>;
+using AcceptorRef = std::shared_ptr<class Acceptor>;
 
 /*--------------
 	 Locks

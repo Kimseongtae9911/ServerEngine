@@ -3,6 +3,7 @@
 #include "SocketUtils.h"
 #include "MemoryManager.h"
 #include "Session.h"
+#include "Service.h"
 
 Acceptor::~Acceptor()
 {
@@ -10,25 +11,24 @@ Acceptor::~Acceptor()
 		acceptor->close();
 }
 
-bool Acceptor::StartAccpet(boost::asio::io_context& _context, const NetAddress& _netAddress, int32 _count)
+bool Acceptor::StartAccpet(boost::asio::io_context& _context, std::shared_ptr<Service> _service, int32 _count)
 {	
 	for (int32 i = 0; i < _count; ++i) {
 		auto acceptor = std::make_shared<boost::asio::ip::tcp::acceptor>(_context);
-		SocketUtils::InitAcceptor(acceptor, _netAddress);
+		SocketUtils::InitAcceptor(acceptor, _service->GetNetAddress());
 
-		acceptor->async_accept([this, &_context, i](boost::system::error_code _err, tcpSocket _socket) {
+		acceptor->async_accept([this, &_context, i, _service](boost::system::error_code _err, tcpSocket _socket) {
 			if (!_err) {
 				SocketUtils::InitializeSocket(_socket, false);
-
-				auto session = std::allocate_shared<Session, StlAllocator<Session>>(m_sessionAllocator, std::move(_socket), std::ref(_context));
+				auto session = _service->CreateSession(_socket, _context);
 				session->RunObject();
-				ProcessAccept(i, _context, session);
+				ProcessAccept(i, _context, _service, session);
 			}
 			else {
 				//todo: 俊矾贸府
 				std::cout << "Error" << std::endl;
 				std::cout << _err << std::endl;
-				ProcessAccept(i, _context, nullptr);
+				ProcessAccept(i, _context, _service, nullptr);
 			}
 			});
 
@@ -38,22 +38,23 @@ bool Acceptor::StartAccpet(boost::asio::io_context& _context, const NetAddress& 
 	return true;
 }
 
-void Acceptor::ProcessAccept(int32 _index, boost::asio::io_context& _context, SessionRef _session)
+void Acceptor::ProcessAccept(int32 _index, boost::asio::io_context& _context, std::shared_ptr<Service> _service, SessionRef _session)
 {
-	//todo: 技记 殿废
+	_service->AddSession(_session);
 
 	auto acceptor = m_acceptorVec[_index];
 
-	acceptor->async_accept([this, &_context, _index](boost::system::error_code _err, tcpSocket _socket) {
+	acceptor->async_accept([this, &_context, _index, _service](boost::system::error_code _err, tcpSocket _socket) {
 		if (!_err) {
-			auto session = std::allocate_shared<Session, StlAllocator<Session>>(m_sessionAllocator, std::move(_socket), std::ref(_context));
+			SocketUtils::InitializeSocket(_socket, false);
+			auto session = _service->CreateSession(_socket, _context);
 			session->RunObject();
-			ProcessAccept(_index, _context, session);
+			ProcessAccept(_index, _context, _service, session);
 		}
 		else {
 			//todo: 俊矾贸府
 			std::cout << "Error" << std::endl;
-			ProcessAccept(_index, _context, nullptr);
+			ProcessAccept(_index, _context, _service, nullptr);
 		}
 		});
 }

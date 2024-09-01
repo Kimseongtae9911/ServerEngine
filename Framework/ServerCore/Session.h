@@ -1,6 +1,8 @@
 #pragma once
 #include "NetworkInterface.h"
 
+class Service;
+
 class Session : public std::enable_shared_from_this<Session>, public NetworkObject
 {
 public:
@@ -10,12 +12,15 @@ public:
 	void RunObject() override;
 	void SendPacket(int8* _data, int32 _length) override;
 
-private:
+	void SetService(std::shared_ptr<Service> _service) { m_service = _service; }
+
+protected:
 	void OnDisconnected();
 	void OnSendPacket(int32 _length) override;
 
-private:
+protected:
 	tcpSocket m_socket;
+	std::shared_ptr<Service> m_service;
 	
 	std::array<uint8, 1024> m_recvBuffer;
 	std::array<uint8, 1024> m_sendBuffer;
