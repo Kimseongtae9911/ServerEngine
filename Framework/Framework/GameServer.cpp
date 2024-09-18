@@ -5,6 +5,8 @@
 
 int main()
 {
+    Logger::GetInstance()->Initialize();
+
     NetworkCore server;
     server.RunObject();        
 

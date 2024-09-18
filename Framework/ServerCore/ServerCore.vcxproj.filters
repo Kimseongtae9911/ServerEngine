@@ -25,6 +25,9 @@
     <Filter Include="Network\Interface">
       <UniqueIdentifier>{953b9e6e-0518-4fb3-b1a4-9929356f7a38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Log">
+      <UniqueIdentifier>{ac851980-499c-41d3-99ee-9ef0becf61d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CorePch.h">
@@ -96,6 +99,12 @@
     <ClInclude Include="Acceptor.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Utils\Log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
@@ -151,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="Acceptor.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Utils\Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
