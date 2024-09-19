@@ -17,20 +17,7 @@ bool Acceptor::StartAccpet(boost::asio::io_context& _context, std::shared_ptr<Se
 		auto acceptor = std::make_shared<boost::asio::ip::tcp::acceptor>(_context);
 		SocketUtils::InitAcceptor(acceptor, _service->GetNetAddress());
 
-		acceptor->async_accept([this, &_context, i, _service](boost::system::error_code _err, tcpSocket _socket) {
-			if (!_err) {
-				SocketUtils::InitializeSocket(_socket, false);
-				auto session = _service->CreateSession(_socket, _context);
-				session->RunObject();
-				ProcessAccept(i, _context, _service, session);
-			}
-			else {
-				//todo: 俊矾贸府
-				std::cout << "Error" << std::endl;
-				std::cout << _err << std::endl;
-				ProcessAccept(i, _context, _service, nullptr);
-			}
-			});
+		ProcessAccept(acceptor, i, _context, _service);
 
 		m_acceptorVec.push_back(acceptor);
 	}
@@ -38,23 +25,26 @@ bool Acceptor::StartAccpet(boost::asio::io_context& _context, std::shared_ptr<Se
 	return true;
 }
 
-void Acceptor::ProcessAccept(int32 _index, boost::asio::io_context& _context, std::shared_ptr<Service> _service, SessionRef _session)
+void Acceptor::ProcessAccept(std::shared_ptr<boost::asio::ip::tcp::acceptor> _acceptor, int32 _index, boost::asio::io_context& _context, std::shared_ptr<Service> _service)
+{
+	_acceptor->async_accept([this, &_context, _index, _service](boost::system::error_code _err, tcpSocket _socket) {
+		if (!_err) {
+			SocketUtils::InitializeSocket(_socket, false);
+			auto session = _service->CreateSession(_socket, _context);
+			OnAccept(_index, _context, _service, session);
+		}
+		else {
+			LError("Accept Error. ErrCode={}, ErrMsg={}", _err.value(), _err.message());
+			//todo:俊矾贸府
+		}
+		});
+}
+
+void Acceptor::OnAccept(int32 _index, boost::asio::io_context& _context, std::shared_ptr<Service> _service, SessionRef _session)
 {
 	_service->AddSession(_session);
 
 	auto acceptor = m_acceptorVec[_index];
 
-	acceptor->async_accept([this, &_context, _index, _service](boost::system::error_code _err, tcpSocket _socket) {
-		if (!_err) {
-			SocketUtils::InitializeSocket(_socket, false);
-			auto session = _service->CreateSession(_socket, _context);
-			session->RunObject();
-			ProcessAccept(_index, _context, _service, session);
-		}
-		else {
-			//todo: 俊矾贸府
-			std::cout << "Error" << std::endl;
-			ProcessAccept(_index, _context, _service, nullptr);
-		}
-		});
+	ProcessAccept(m_acceptorVec[_index], _index, _context, _service);
 }

@@ -22,7 +22,7 @@ SessionRef Service::CreateSession(tcpSocket& _socket, boost::asio::io_context& _
 
 void Service::AddSession(SessionRef _session)
 {
-	_session->SetService(shared_from_this());
+	_session->SetService(shared_from_this().get());
 
 	WRITE_LOCK;
 	++m_sessionCount;

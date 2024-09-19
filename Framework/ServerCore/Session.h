@@ -1,5 +1,6 @@
 #pragma once
 #include "NetworkInterface.h"
+#include "NetAddress.h"
 
 class Service;
 
@@ -12,7 +13,8 @@ public:
 	void RunObject() override;
 	void SendPacket(int8* _data, int32 _length) override;
 
-	void SetService(std::shared_ptr<Service> _service) { m_service = _service; }
+	void SetService(Service* _service) { m_service = _service; }
+	NetAddress GetNetAddress() const { return NetAddress(m_socket.remote_endpoint()); }
 
 protected:
 	void OnDisconnected();
@@ -20,7 +22,8 @@ protected:
 
 protected:
 	tcpSocket m_socket;
-	std::shared_ptr<Service> m_service;
+	Service* m_service = nullptr;
+	NetAddress m_netAddress;
 	
 	std::array<uint8, 1024> m_recvBuffer;
 	std::array<uint8, 1024> m_sendBuffer;
