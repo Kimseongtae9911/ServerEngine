@@ -1,5 +1,4 @@
 #pragma once
-#include <tbb/concurrent_queue.h>
 
 /*
 	메모리의 크기, 다음 메모리의 힙 주소 등의 정보를 담은 헤더

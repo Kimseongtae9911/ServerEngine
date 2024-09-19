@@ -28,6 +28,7 @@ void NetworkCore::RunObject()
 
 	for (int32 i = 0; i < 6; ++i) {
 		GThreadManager->RunThreads([this]() {
+			CLInfo("io thread start. ThreadId={}", LThreadId);
 			m_context.run(); 
 			});
 	}	

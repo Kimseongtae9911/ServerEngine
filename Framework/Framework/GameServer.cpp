@@ -5,7 +5,12 @@
 
 int main()
 {
-    Logger::GetInstance()->Initialize();
+    if (false == Logger::GetInstance()->Initialize())
+    {
+        ASSERT_CRASH("Logger Initailize Fail");
+    }
+
+    CLLog("Logger Initialized");
 
     NetworkCore server;
     server.RunObject();        

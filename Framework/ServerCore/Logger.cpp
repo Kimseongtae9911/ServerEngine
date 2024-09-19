@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Logger.h"
+#include "ThreadManager.h"
 
 bool Logger::Initialize()
 {
@@ -14,13 +15,39 @@ bool Logger::Initialize()
         currentTime << std::put_time(&tm, "%H%M%S");
 
         std::string fileName = filePath + "logfile_" + currentTime.str() + ".log";
-
+        
+        if (!std::filesystem::exists(fileName)) {
+            std::filesystem::create_directories(std::filesystem::path(fileName).parent_path());
+            std::ofstream createFile(fileName);
+            createFile.close();
+        }
+        
         m_logFile.open(fileName, std::ios::app);
+
 
         if (!m_logFile.is_open())
         {
             throw std::runtime_error("Failed to open log file.");
         }
+        m_isRunning = true;
+
+        GThreadManager->RunThreads([this]() {
+            WriteLogToConsole(LogLevel::Info, "Logger Thread Start. ThreadId={}", LThreadId);
+            std::string logMessage;
+            while (m_isRunning)
+            {
+                while (m_logQueue.try_pop(logMessage))
+                {
+                    m_logFile << logMessage << std::endl;
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            }
+
+            while (m_logQueue.try_pop(logMessage))
+            {
+                m_logFile << logMessage << std::endl;
+            }
+            });
 
         return true;
     }
@@ -31,7 +58,14 @@ bool Logger::Initialize()
     }
 }
 
+bool Logger::Release()
+{
+    m_isRunning = false;
+}
+
 void Logger::WriteLogToConsole(const std::string& _msg)
 {
+    std::unique_lock<std::mutex> lock(m_consoleLock);
+
 	std::cout << _msg << std::endl;
 }

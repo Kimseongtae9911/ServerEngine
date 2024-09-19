@@ -18,6 +18,8 @@
 #include <fstream>
 #include <format>
 #include <functional>
+#include <utility>
+#include <filesystem>
 
 #include "Singleton.h"
 #include "Logger.h"
