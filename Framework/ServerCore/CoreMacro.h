@@ -2,7 +2,7 @@
 
 #define OUT
 
-#define _WINDOW _WIN32 | _WIN64
+#define _WINDOW _WIN32 || _WIN64
 
 /*----------------
 	  Lock

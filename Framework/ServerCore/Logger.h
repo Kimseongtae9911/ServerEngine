@@ -30,28 +30,54 @@ public:
 
 	template<typename... Args>
 	std::string ParseLogMsg(std::string_view _msg, const Args&... _args);
+
+private:
+	std::ofstream m_logFile;
+	LogLevel m_currentLogLevel = LogLevel::INFO;
 };
 
 template<typename ...Args>
 inline void Logger::WriteLogToFile(LogLevel _level, std::string_view _msg, const Args & ..._args)
 {
+	if (_level < m_currentLogLevel)
+		return;
+
+	if (!m_logFile.is_open())
+		return;
+
+	auto now = std::chrono::system_clock::now();
+	auto now_c = std::chrono::system_clock::to_time_t(now);
+	std::tm tm;
+	localtime_s(&tm, &now_c);
+
+	// 시간 문자열 생성
+	std::stringstream timeStream;
+	timeStream << std::put_time(&tm, "%Y-%m-%d %H:%M:%S");
+
+	std::stringstream logStream;
+	std::string levelStr;
+
 	switch (_level)
 	{
 	case LogLevel::INFO:
-		BOOST_LOG_TRIVIAL(info) << ParseLogMsg(_msg, _args...);
+		levelStr = "INFO";
 		break;
 	case LogLevel::DEBUG:
-		BOOST_LOG_TRIVIAL(debug) << ParseLogMsg(_msg, _args...);
+		levelStr = "DEBUG";
 		break;
 	case LogLevel::WARNING:
-		BOOST_LOG_TRIVIAL(warning) << ParseLogMsg(_msg, _args...);
+		levelStr = "WARNING";
 		break;
 	case LogLevel::FATAL:
-		BOOST_LOG_TRIVIAL(fatal) << ParseLogMsg(_msg, _args...);
+		levelStr = "FATAL";
 		break;
 	default:
+		levelStr = "UNKNOWN";
 		break;
 	}
+	logStream << "[" << timeStream.str() << "] [" << levelStr << "] " << ParseLogMsg(_msg, _args...);
+
+	m_logFile << logStream.str() << std::endl;
 }
 
 template<typename ...Args>
