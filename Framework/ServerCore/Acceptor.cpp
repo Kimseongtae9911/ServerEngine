@@ -44,7 +44,7 @@ void Acceptor::OnAccept(int32 _index, boost::asio::io_context& _context, std::sh
 {
 	_service->AddSession(_session);
 
-	auto acceptor = m_acceptorVec[_index];
+	_session->ProcessConnected();
 
 	ProcessAccept(m_acceptorVec[_index], _index, _context, _service);
 }

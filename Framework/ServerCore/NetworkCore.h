@@ -1,8 +1,4 @@
 #pragma once
-#include "NetworkInterface.h"
-#include "Acceptor.h"
-
-class Session;
 
 class NetworkCore
 {

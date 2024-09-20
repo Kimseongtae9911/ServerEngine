@@ -21,6 +21,7 @@
 #include <utility>
 #include <filesystem>
 
+#include "ErrorCode.h"
 #include "Singleton.h"
 #include "Logger.h"
 

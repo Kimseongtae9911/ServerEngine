@@ -21,6 +21,9 @@ public:
 
 	template<typename T>
 	static bool SetSendBufferSize(T& _socket, int32 _size);
+
+	template<typename T>
+	static bool CloseSocket(T& _socket);
 };
 
 template<typename T>
@@ -96,4 +99,20 @@ inline bool SocketUtils::SetSendBufferSize(T& _socket, int32 _size)
 		//todo: 로그 추가
 		return false;
 	}
+}
+
+template<typename T>
+inline bool SocketUtils::CloseSocket(T& _socket)
+{
+	if (_socket.is_open()) {
+		boost::system::error_code ec;
+		_socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ec);
+		_socket.close(ec);
+
+		if (ec) {
+			LError("Error while closing socket. ErrorCode={}, ErrorMsg={]", ec.value(), ec.message());
+		}
+	}
+
+	return true;
 }
