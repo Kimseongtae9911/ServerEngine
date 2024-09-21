@@ -35,5 +35,7 @@ protected:
 	std::array<uint8, 1024> m_recvBuffer;
 	std::array<uint8, 1024> m_sendBuffer;
 	boost::asio::io_service::strand m_strand;
+
+	std::atomic_bool m_isDisconnected = false;
 };
 

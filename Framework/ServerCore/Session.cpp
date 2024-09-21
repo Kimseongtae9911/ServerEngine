@@ -11,7 +11,7 @@ Session::Session(tcpSocket _socket, boost::asio::io_context& _context) : m_socke
 
 Session::~Session()
 {
-	LInfo("Session Release");
+	CLInfo("Session Release");
 }
 
 void Session::ProcessRecv()
@@ -74,10 +74,11 @@ void Session::OnConnected()
 
 void Session::OnDisconnected()
 {
+	if (m_isDisconnected.exchange(true))
+		return;
+
 	CLInfo("Session Disconnected");
-	m_service->ReleaseSession(shared_from_this());
 
 	SocketUtils::CloseSocket(m_socket);
-
-	//todo: 세션 메모리 해제가 안됨..
+	m_service->ReleaseSession(shared_from_this());
 }
