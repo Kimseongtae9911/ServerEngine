@@ -12,7 +12,8 @@ public:
 	Session(tcpSocket _socket, boost::asio::io_context& _context);
 	~Session();
 
-	void SendPacket(int8* _data, int32 _length);
+	void SendPacket(uint8* _data, int32 _length);
+	bool Connect(const NetAddress& _netAddress);
 	
 	void ProcessRecv();
 	void ProcessConnected();

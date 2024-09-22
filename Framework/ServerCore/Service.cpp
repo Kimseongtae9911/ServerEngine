@@ -47,6 +47,14 @@ ClientService::ClientService(const NetAddress& _netAddress, SessionFactory _sess
 
 bool ClientService::ServiceStart(boost::asio::io_context& _context, int32 _count)
 {
+	for (int32 i = 0; i < GetMaxSessionCount(); ++i) {
+		tcpSocket socket(_context);
+		auto session = CreateSession(socket, _context);
+		session->SetService(this);
+		if (false == session->Connect(m_netAddress))
+			return false;
+	}
+
 	return true;
 }
 

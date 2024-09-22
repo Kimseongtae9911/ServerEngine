@@ -1,50 +1,76 @@
 ﻿#include "pch.h"
+#include "Service.h"
+#include "Session.h"
+#include "ThreadManager.h"
 
 using boost::asio::ip::tcp;
 
+class ServerSession : public Session
+{
+public:
+    ServerSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) {}
+
+    ~ServerSession() {
+        CLInfo("ServerSession Release");
+    }
+
+    void OnConnected() override
+    {
+        std::string str = "Hello World";
+
+        std::array<uint8_t, 1024> buf;
+        memcpy_s(buf.data(), buf.size(), str.c_str(), str.size());
+        CLInfo("Connected To Server");
+        SendPacket(buf.data(), buf.size());
+    }
+
+    void OnDisconnected() override
+    {
+        CLInfo("Server Disconnected");
+    }
+
+    void OnRecvPacket(std::array<uint8, 1024> _buffer, int32 _len) override
+    {
+        CLInfo("Dummy Client Recv Packet. Len={}", _len);
+
+        ProcessRecv();
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        SendPacket(_buffer.data(), _len);
+    }
+
+    void OnSendPacket(int32 _len) override
+    {
+        CLInfo("Dummy Client Send Packet. Len={}", _len);
+    }
+};
+
 int main()
 {
-    
-    try
-    {
-        // Boost.Asio I/O 서비스 객체 생성
-        boost::asio::io_service io_service;
+    boost::asio::io_context context;
 
-        // 서버의 엔드포인트 생성
-        tcp::resolver resolver(io_service);
-        tcp::resolver::query query("127.0.0.1", "7777");
-        tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        // 소켓 생성 및 서버에 연결
-        tcp::socket socket(io_service);
-        boost::asio::connect(socket, endpoint_iterator);
+    auto service = CreateSharedObj<ClientService>(
+        NetAddress("127.0.0.1", 7777),
+        [](tcpSocket _socket, boost::asio::io_context& _context) {
+            return CreateSharedObj<ServerSession>(std::move(_socket), _context);
+        },
+        1	// Max Session Count (todo: 구현해야함)
+    );
 
-        if (socket.is_open())
-            std::cout << "Server Connected!!" << std::endl;
+    if (false == service->ServiceStart(context))
+        return 0;
 
-        while (true) {
-            //메시지 수신
-        }
-
-        //// 서버로 보낼 메시지
-        //const std::string msg = "Hello from client!";
-
-        //// 메시지를 서버로 전송
-        //boost::asio::write(socket, boost::asio::buffer(msg));
-
-        //// 서버로부터 응답 받기 위한 버퍼 생성
-        //char reply[1024];
-        //size_t reply_length = boost::asio::read(socket, boost::asio::buffer(reply, msg.size()));
-
-        //// 서버로부터 받은 응답 출력
-        //std::cout << "Reply is: ";
-        //std::cout.write(reply, reply_length);
-        //std::cout << "\n";
+    for (int32 i = 0; i < 6; ++i) {
+        GThreadManager->RunThreads([&context]() {
+            CLInfo("io thread start. ThreadId={}", LThreadId);
+            context.run();
+            });
     }
-    catch (std::exception& e)
-    {
-        std::cerr << "Exception: " << e.what() << "\n";
-    }
+
+    GThreadManager->JoinThreads();
 
     return 0;
 }

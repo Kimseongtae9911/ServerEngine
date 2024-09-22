@@ -24,6 +24,7 @@ public:
 	int32				GetCurrentSessionCount() { return m_sessionCount; }
 	int32				GetMaxSessionCount() { return m_maxSessionCount; }
 	const NetAddress&	GetNetAddress() const { return m_netAddress; }
+	ServiceType			GetServiceType() const { return m_type; }
 
 protected:
 	USE_LOCK;

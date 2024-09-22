@@ -5,6 +5,28 @@
 #include "ThreadManager.h"
 #include "Service.h"
 
+class GameSession : public Session
+{
+public:
+	GameSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) {}
+
+	~GameSession() { CLInfo("GameSession Release"); }
+
+	void OnRecvPacket(std::array<uint8, 1024> _buffer, int32 _len) override
+	{
+		CLInfo("Recv Packet. Len={}", _len);
+
+		ProcessRecv();
+
+		SendPacket(_buffer.data(), _len);
+	}
+
+	void OnSendPacket(int32 _len) override
+	{
+		CLInfo("Send Packet. Len={}", _len);
+	}
+};
+
 NetworkCore::NetworkCore()
 {
 }
@@ -19,7 +41,7 @@ void NetworkCore::RunObject()
 	auto service = CreateSharedObj<ServerService>(
 		NetAddress(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 7777)),
 		[](tcpSocket _socket, boost::asio::io_context& _context) {
-			return CreateSharedObj<Session>(std::move(_socket), _context);
+			return CreateSharedObj<GameSession>(std::move(_socket), _context);
 		},
 		100	// Max Session Count (todo: 구현해야함)
 	);

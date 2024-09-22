@@ -2,6 +2,7 @@
 #include "ThreadManager.h"
 #include "Memory.h"
 #include "NetworkCore.h"
+#include "Session.h"
 
 int main()
 {
