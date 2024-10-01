@@ -61,6 +61,8 @@ bool Logger::Initialize()
 bool Logger::Release()
 {
     m_isRunning = false;
+
+    return true;
 }
 
 void Logger::WriteLogToConsole(const std::string& _msg)

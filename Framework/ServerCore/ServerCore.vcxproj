@@ -180,6 +180,7 @@
     <ClInclude Include="NetworkCore.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RecvBuffer.h" />
     <ClInclude Include="RefCounter.h" />
     <ClInclude Include="Service.h" />
     <ClInclude Include="Session.h" />
@@ -209,6 +210,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RecvBuffer.cpp" />
     <ClCompile Include="RefCounter.cpp" />
     <ClCompile Include="Service.cpp" />
     <ClCompile Include="Session.cpp" />

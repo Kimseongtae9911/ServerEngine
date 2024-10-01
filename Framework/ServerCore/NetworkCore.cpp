@@ -12,13 +12,13 @@ public:
 
 	~GameSession() { CLInfo("GameSession Release"); }
 
-	void OnRecvPacket(std::array<uint8, 1024> _buffer, int32 _len) override
+	int32 ProcessPacket(uint8* _buffer, int32 _len) override
 	{
 		CLInfo("Recv Packet. Len={}", _len);
 
-		ProcessRecv();
+		SendPacket(_buffer, _len);
 
-		SendPacket(_buffer.data(), _len);
+		return _len;
 	}
 
 	void OnSendPacket(int32 _len) override

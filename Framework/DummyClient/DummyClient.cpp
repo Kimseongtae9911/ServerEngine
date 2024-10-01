@@ -21,7 +21,7 @@ public:
         std::array<uint8_t, 1024> buf;
         memcpy_s(buf.data(), buf.size(), str.c_str(), str.size());
         CLInfo("Connected To Server");
-        SendPacket(buf.data(), buf.size());
+        SendPacket(buf.data(), str.size());
     }
 
     void OnDisconnected() override
@@ -29,15 +29,15 @@ public:
         CLInfo("Server Disconnected");
     }
 
-    void OnRecvPacket(std::array<uint8, 1024> _buffer, int32 _len) override
+    int32 ProcessPacket(uint8* _buffer, int32 _len) override
     {
         CLInfo("Dummy Client Recv Packet. Len={}", _len);
 
-        ProcessRecv();
-
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        SendPacket(_buffer.data(), _len);
+        SendPacket(_buffer, _len);
+
+        return _len;
     }
 
     void OnSendPacket(int32 _len) override
