@@ -51,6 +51,7 @@ bool ClientService::ServiceStart(boost::asio::io_context& _context, int32 _count
 		tcpSocket socket(_context);
 		auto session = CreateSession(socket, _context);
 		session->SetService(this);
+		session->SetId(i);
 		if (false == session->Connect(m_netAddress))
 			return false;
 	}

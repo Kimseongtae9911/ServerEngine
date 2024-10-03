@@ -18,9 +18,9 @@ void DeadLockProfiler::PushLock(const std::string _name)
 		lockId = it->second;
 	}
 
-	if (m_lockStack.empty() == false) {
+	if (LLockStack.empty() == false) {
 		// 기존에 없던 락이라면 데드락 여부 확인
-		const int32 prevId = m_lockStack.top();
+		const int32 prevId = LLockStack.top();
 		// 같은 스레드가 여러 락을 할 수 있다
 		if (lockId != prevId) {
 			auto& history = m_lockHistory[prevId];
@@ -31,21 +31,21 @@ void DeadLockProfiler::PushLock(const std::string _name)
 		}
 	}
 
-	m_lockStack.push(lockId);
+	LLockStack.push(lockId);
 }
 
 void DeadLockProfiler::PopLock(const std::string _name)
 {
 	LockGuard guard(m_lock);
 
-	if (m_lockStack.empty())
+	if (LLockStack.empty())
 		CRASH("Multiple_Unlock");
 
 	auto lockId = m_nameToId[_name];
-	if (m_lockStack.top() != lockId)
+	if (LLockStack.top() != lockId)
 		CRASH("Invalid_Unlock");
 
-	m_lockStack.pop();
+	LLockStack.pop();
 }
 
 void DeadLockProfiler::CheckCycle()

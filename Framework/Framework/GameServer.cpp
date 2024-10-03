@@ -4,6 +4,7 @@
 #include "NetworkCore.h"
 #include "Session.h"
 #include "Service.h"
+#include "GameSession.h"
 
 class GameTimer : public Timer
 {
@@ -30,8 +31,16 @@ int main()
 
     CLLog("Logger Initialized");
 
+    auto service = CreateSharedObj<ServerService>(
+        NetAddress(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 7777)),
+        [](tcpSocket _socket, boost::asio::io_context& _context) {
+            return CreateSharedObj<GameSession>(std::move(_socket), _context);
+        },
+        100	// Max Session Count (todo: 구현해야함)
+    );
+
     NetworkCore server;
-    server.RunObject(CreateSharedObj<GameTimer>());        
+    server.RunObject(service, CreateSharedObj<GameTimer>());
 
     GThreadManager->JoinThreads();    
 }

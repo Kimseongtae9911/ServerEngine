@@ -6,14 +6,15 @@
 	각 클래스별 고유의 오브젝트 풀을 가지며, 각 오브젝트 풀은 메모리풀을 가짐	
 	메모리풀 하나를 쓰는 것과 동일하지만 각 객체별 메모리풀을 사용하므로 어디서 문제가 발생했는지 파악하기 쉽다
 
-	오브젝트 자체는 매번 생성과 해제를 반복함
+	오브젝트 자체는 매번 생성과 해제를 반복함 todo:개선
 */
 template<typename Type>
 class ObjectPool	
 {
 public:
-	static std::shared_ptr<Type> MakeObject() {
-		return std::shared_ptr<Type>(PopObject(), PushObject);
+	template<typename... Args>
+	static std::shared_ptr<Type> MakeObject(Args&&... _args) {
+		return std::shared_ptr<Type>(PopObject(std::forward<Args>(_args)...), PushObject);
 	}
 
 private:

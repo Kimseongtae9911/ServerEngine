@@ -18,6 +18,8 @@ public:
 	Session(tcpSocket _socket, boost::asio::io_context& _context);
 	~Session();
 
+	void SetId(int32 _id) { m_id = _id; }
+
 	void SendPacket(SendBufRef _sendBuffer, bool _immediately = true);
 	bool Connect(const NetAddress& _netAddress);
 	
@@ -50,5 +52,7 @@ protected:
 	tbb::concurrent_queue<SendBufRef> m_sendQueue;
 
 	std::atomic_bool m_isDisconnected = false;
+	
+	int32 m_id = 0;
 };
 

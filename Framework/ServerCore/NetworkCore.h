@@ -7,7 +7,7 @@ public:
     NetworkCore();
     ~NetworkCore();
 
-    void RunObject(std::shared_ptr<Timer> _timer);
+    void RunObject(std::shared_ptr<Service> _service, std::shared_ptr<Timer> _timer);
 
 private:
     boost::asio::io_context m_context;

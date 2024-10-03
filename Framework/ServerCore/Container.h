@@ -19,6 +19,9 @@
 	네이밍 컨벤션은 우선 성태의 앞글자 st..
 */
 
+template<typename Type, uint32 Size>
+using StArray = std::array<Type, Size>;
+
 template<typename Type>
 using StVector = std::vector<Type, StlAllocator<Type>>;
 

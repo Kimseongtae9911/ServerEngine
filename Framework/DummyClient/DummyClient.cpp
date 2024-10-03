@@ -17,10 +17,11 @@ public:
     void OnConnected() override
     {
         std::string str = "Hello World";
-        CLInfo("Connected To Server");
+        CLInfo("Client{} Connected To Server", m_id);
 
-        auto sendBuffer = CreateSharedObj<SendBuffer>(4096);
-        sendBuffer->CopyData(str.data(), str.size());
+        auto sendBuffer = GSendBufferPool->UseChunk(4096);
+        ::memcpy_s(sendBuffer->GetBuffer(), str.size(), str.data(), str.size());
+        sendBuffer->Close(str.size());
 
         SendPacket(sendBuffer);
     }
@@ -32,12 +33,14 @@ public:
 
     int32 ProcessPacket(uint8* _buffer, int32 _len) override
     {
-        CLInfo("Dummy Client Recv Packet. Len={}", _len);
+        CLInfo("Dummy Client{} Recv Packet. Len={}", m_id, _len);
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        auto sendBuffer = CreateSharedObj<SendBuffer>(4096);
-        sendBuffer->CopyData(_buffer, _len);
+        auto sendBuffer = GSendBufferPool->UseChunk(4096);
+        ::memcpy_s(sendBuffer->GetBuffer(), _len, _buffer, _len);
+        sendBuffer->Close(_len);
+
         SendPacket(sendBuffer);
 
         return _len;
@@ -45,7 +48,7 @@ public:
 
     void OnSendPacket(int32 _len) override
     {
-        CLInfo("Dummy Client Send Packet. Len={}", _len);
+        CLInfo("Dummy Client{} Send Packet. Len={}", m_id, _len);
     }
 };
 

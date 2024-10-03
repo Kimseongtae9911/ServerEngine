@@ -16,7 +16,6 @@ private:
 private:
 	std::unordered_map<std::string, int32> m_nameToId;
 	std::unordered_map<int32, std::string> m_idToName;
-	std::stack<int32> m_lockStack;
 	std::map<int32, std::set<int32>> m_lockHistory;
 
 	Mutex m_lock;

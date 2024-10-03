@@ -34,21 +34,18 @@
     <Filter Include="Network\Timer">
       <UniqueIdentifier>{f3096575-000f-4220-a802-fd322ae53fd0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\pch">
+      <UniqueIdentifier>{30d45090-32e9-484a-85c9-646d201e5150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\ThreadLocal">
+      <UniqueIdentifier>{2509ea92-313b-4836-ae0c-3bac1b37c74b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CorePch.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="Types.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="CoreMacro.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="CoreTLS.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="CoreGlobal.h">
@@ -120,18 +117,18 @@
     <ClInclude Include="Timer.h">
       <Filter>Network\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="CorePch.h">
+      <Filter>Main\pch</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Main\pch</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTLS.h">
+      <Filter>Main\ThreadLocal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CorePch.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="CoreGlobal.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="CoreTLS.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
@@ -187,6 +184,15 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Network\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="CorePch.cpp">
+      <Filter>Main\pch</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Main\pch</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreTLS.cpp">
+      <Filter>Main\ThreadLocal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
