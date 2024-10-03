@@ -26,6 +26,8 @@ public:
 	const NetAddress&	GetNetAddress() const { return m_netAddress; }
 	ServiceType			GetServiceType() const { return m_type; }
 
+	const StSet<SessionRef>& GetAllSession() const { return m_sessions; }
+
 protected:
 	USE_LOCK;
 

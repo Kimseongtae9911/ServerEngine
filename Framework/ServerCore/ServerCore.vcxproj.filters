@@ -31,6 +31,9 @@
     <Filter Include="Network\Buffer">
       <UniqueIdentifier>{a080f852-88b8-4c82-8191-83bccc82de26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\Timer">
+      <UniqueIdentifier>{f3096575-000f-4220-a802-fd322ae53fd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CorePch.h">
@@ -111,6 +114,12 @@
     <ClInclude Include="RecvBuffer.h">
       <Filter>Network\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="SendBuffer.h">
+      <Filter>Network\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Network\Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
@@ -172,6 +181,12 @@
     </ClCompile>
     <ClCompile Include="RecvBuffer.cpp">
       <Filter>Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="SendBuffer.cpp">
+      <Filter>Network\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Network\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

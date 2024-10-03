@@ -17,11 +17,12 @@ public:
     void OnConnected() override
     {
         std::string str = "Hello World";
-
-        std::array<uint8_t, 1024> buf;
-        memcpy_s(buf.data(), buf.size(), str.c_str(), str.size());
         CLInfo("Connected To Server");
-        SendPacket(buf.data(), str.size());
+
+        auto sendBuffer = CreateSharedObj<SendBuffer>(4096);
+        sendBuffer->CopyData(str.data(), str.size());
+
+        SendPacket(sendBuffer);
     }
 
     void OnDisconnected() override
@@ -35,7 +36,9 @@ public:
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        SendPacket(_buffer, _len);
+        auto sendBuffer = CreateSharedObj<SendBuffer>(4096);
+        sendBuffer->CopyData(_buffer, _len);
+        SendPacket(sendBuffer);
 
         return _len;
     }

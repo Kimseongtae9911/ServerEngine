@@ -18,7 +18,7 @@ public:
 	Session(tcpSocket _socket, boost::asio::io_context& _context);
 	~Session();
 
-	void SendPacket(uint8* _data, int32 _length);
+	void SendPacket(SendBufRef _sendBuffer, bool _immediately = true);
 	bool Connect(const NetAddress& _netAddress);
 	
 	void ProcessRecv();
@@ -28,6 +28,8 @@ public:
 	void SetService(Service* _service) { m_service = _service; }
 	NetAddress GetNetAddress() const { return NetAddress(m_socket.remote_endpoint()); }
 
+	virtual void OnTimer();
+
 protected:
 	void OnRecvPacket(int32 _len);
 
@@ -36,14 +38,16 @@ protected:
 	virtual void OnSendPacket(int32 _length);
 	virtual int32 ProcessPacket(uint8* _buffer, int32 _len);
 
+	void FlushSendQueue();
+
 protected:
 	tcpSocket m_socket;
 	Service* m_service = nullptr;
 	NetAddress m_netAddress;
 	
 	RecvBuffer m_recvBuffer;
-	std::array<uint8, 1024> m_sendBuffer;
 	boost::asio::io_service::strand m_strand;
+	tbb::concurrent_queue<SendBufRef> m_sendQueue;
 
 	std::atomic_bool m_isDisconnected = false;
 };

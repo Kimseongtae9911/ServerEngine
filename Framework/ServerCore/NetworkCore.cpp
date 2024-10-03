@@ -16,7 +16,10 @@ public:
 	{
 		CLInfo("Recv Packet. Len={}", _len);
 
-		SendPacket(_buffer, _len);
+		auto sendBuffer = CreateSharedObj<SendBuffer>(4096);
+		sendBuffer->CopyData(_buffer, _len);
+
+		SendPacket(sendBuffer);
 
 		return _len;
 	}
@@ -36,7 +39,7 @@ NetworkCore::~NetworkCore()
 	m_context.stop();
 }
 
-void NetworkCore::RunObject()
+void NetworkCore::RunObject(std::shared_ptr<Timer> _timer)
 {	
 	auto service = CreateSharedObj<ServerService>(
 		NetAddress(boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), 7777)),
@@ -47,11 +50,21 @@ void NetworkCore::RunObject()
 	);
 
 	service->ServiceStart(m_context);
+	m_timer = std::move(_timer);
+	m_timer->SetService(service.get());
 
 	for (int32 i = 0; i < 6; ++i) {
 		GThreadManager->RunThreads([this]() {
 			CLInfo("io thread start. ThreadId={}", LThreadId);
 			m_context.run(); 
 			});
-	}	
+	}
+
+	//todo: 전체 세션에 대해 하나의 타이머만 돌리고 있다. 성능 개선이 필요해보임
+	for (int32 i = 0; i < 1; ++i) {
+		GThreadManager->RunThreads([this]() {
+			CLInfo("timer thread start. ThreadId={}", LThreadId);
+			m_timer->StartTimer(100);	//timer temp
+			});
+	}
 }

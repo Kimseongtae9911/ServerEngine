@@ -22,6 +22,7 @@ using uint64 = uint64_t;
 --------------*/
 using SessionRef = std::shared_ptr<class Session>;
 using AcceptorRef = std::shared_ptr<class Acceptor>;
+using SendBufRef = std::shared_ptr<class SendBuffer>;
 
 /*--------------
 	 Locks
