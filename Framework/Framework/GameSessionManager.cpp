@@ -18,6 +18,12 @@ void GameSessionManager::RemoveSession(GameSessionRef _session)
 
 void GameSessionManager::Broadcast(SendBufRef _sendBuffer)
 {
-	for (auto session : m_sessions)
+	StSet<GameSessionRef> sessions;
+	{
+		READ_LOCK;
+		sessions = m_sessions;
+	}
+
+	for (auto session : sessions)
 		session->SendPacket(_sendBuffer, false);
 }

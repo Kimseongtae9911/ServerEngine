@@ -16,14 +16,7 @@ public:
 
     void OnConnected() override
     {
-        std::string str = "Hello World";
         CLInfo("Client{} Connected To Server", m_id);
-
-        auto sendBuffer = GSendBufferPool->UseChunk(4096);
-        ::memcpy_s(sendBuffer->GetBuffer(), str.size(), str.data(), str.size());
-        sendBuffer->Close(str.size());
-
-        SendPacket(sendBuffer);
     }
 
     void OnDisconnected() override
@@ -31,19 +24,13 @@ public:
         CLInfo("Server Disconnected");
     }
 
-    int32 ProcessPacket(uint8* _buffer, int32 _len) override
+    void ParsePacket(uint8* _buffer, int32 _len) override
     {
-        CLInfo("Dummy Client{} Recv Packet. Len={}", m_id, _len);
+        PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
+        char recvBuffer[4096];
+        ::memcpy_s(recvBuffer, 4096, &_buffer[4], header->size - sizeof(PacketHeader));
 
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-
-        auto sendBuffer = GSendBufferPool->UseChunk(4096);
-        ::memcpy_s(sendBuffer->GetBuffer(), _len, _buffer, _len);
-        sendBuffer->Close(_len);
-
-        SendPacket(sendBuffer);
-
-        return _len;
+        CLInfo("Recv Packet. Msg={}, Protocol= {}, Len={}", recvBuffer, header->protocol, header->size);
     }
 
     void OnSendPacket(int32 _len) override
@@ -63,7 +50,7 @@ int main()
         [](tcpSocket _socket, boost::asio::io_context& _context) {
             return CreateSharedObj<ServerSession>(std::move(_socket), _context);
         },
-        1	// Max Session Count (todo: 구현해야함)
+        1000	// Max Session Count (todo: 구현해야함)
     );
 
     if (false == service->ServiceStart(context))

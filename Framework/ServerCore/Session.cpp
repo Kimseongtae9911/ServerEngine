@@ -112,7 +112,25 @@ void Session::OnRecvPacket(int32 _len)
 
 int32 Session::ProcessPacket(uint8* _buffer, int32 _len)
 {
-	return int32();
+	int32 processLen = 0;
+
+	while (true)
+	{
+		int32 dataSize = _len - processLen;
+		if (dataSize < sizeof(PacketHeader))
+			break;
+
+		PacketHeader* header = reinterpret_cast<PacketHeader*>(&_buffer[processLen]);
+		if (dataSize < header->size)
+			break;
+
+		//패킷 수행
+		ParsePacket(&_buffer[processLen], header->size);
+
+		processLen += header->size;
+	}
+
+	return processLen;
 }
 
 void Session::FlushSendQueue()

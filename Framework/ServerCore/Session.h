@@ -38,7 +38,8 @@ protected:
 	virtual void OnConnected();
 	virtual void OnDisconnected();
 	virtual void OnSendPacket(int32 _length);
-	virtual int32 ProcessPacket(uint8* _buffer, int32 _len);
+	virtual int32 ProcessPacket(uint8* _buffer, int32 _len) sealed;
+	virtual void ParsePacket(uint8* _buffer, int32 _len) abstract;
 
 	void FlushSendQueue();
 
@@ -55,4 +56,3 @@ protected:
 	
 	int32 m_id = 0;
 };
-

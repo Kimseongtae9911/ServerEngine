@@ -9,7 +9,7 @@ public:
 
 	void OnConnected() override;
 	void OnDisconnected() override;
-	int32 ProcessPacket(uint8* _buffer, int32 _len) override;
+	void ParsePacket(uint8* _buffer, int32 _len) override;
 	void OnSendPacket(int32 _len) override;
 };
 

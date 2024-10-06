@@ -40,6 +40,9 @@
     <Filter Include="Main\ThreadLocal">
       <UniqueIdentifier>{2509ea92-313b-4836-ae0c-3bac1b37c74b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\Packet">
+      <UniqueIdentifier>{4a892ceb-7a30-4777-af1e-c10bd37c4205}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.h">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="CoreTLS.h">
       <Filter>Main\ThreadLocal</Filter>
+    </ClInclude>
+    <ClInclude Include="packet.h">
+      <Filter>Network\Packet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

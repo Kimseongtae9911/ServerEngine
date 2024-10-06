@@ -5,6 +5,7 @@
 #include "Session.h"
 #include "Service.h"
 #include "GameSession.h"
+#include "GameSessionManager.h"
 
 class GameTimer : public Timer
 {
@@ -41,6 +42,25 @@ int main()
 
     NetworkCore server;
     server.RunObject(service, CreateSharedObj<GameTimer>());
+
+    char sendData[] = "Hello World";
+    while (true)
+    {
+        auto sendBuffer = GSendBufferPool->UseChunk(4096);
+
+        auto buffer = reinterpret_cast<PacketHeader*>(sendBuffer->GetBuffer());
+        buffer->size = sizeof(sendData) + sizeof(PacketHeader);
+        buffer->protocol = 1;
+
+
+        ::memcpy_s(&buffer[4], buffer->size, sendData, sizeof(sendData));
+        sendBuffer->Close(buffer->size);
+
+        GameSessionMgr->Broadcast(sendBuffer);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    }
+    
 
     GThreadManager->JoinThreads();    
 }
