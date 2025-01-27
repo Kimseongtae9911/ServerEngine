@@ -56,3 +56,16 @@ protected:
 	
 	int32 m_id = 0;
 };
+
+class PacketSession : public Session
+{
+public:
+	PacketSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) {}
+	virtual ~PacketSession();
+
+	PacketSessionRef	GetPacketSessionRef() { return static_pointer_cast<PacketSession>(shared_from_this()); }
+
+protected:
+	virtual int32		OnRecv(BYTE* buffer, int32 len) sealed;
+	virtual void		OnRecvPacket(BYTE* buffer, int32 len) abstract;
+};

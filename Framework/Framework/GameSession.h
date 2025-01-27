@@ -1,11 +1,11 @@
 #pragma once
 #include "Session.h"
 
-class GameSession : public Session
+class GameSession : public PacketSession
 {
 public:
-	GameSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) {}
-	~GameSession();
+	GameSession(tcpSocket _socket, boost::asio::io_context& _context) : PacketSession(std::move(_socket), _context) {}
+	virtual ~GameSession();
 
 	void OnConnected() override;
 	void OnDisconnected() override;

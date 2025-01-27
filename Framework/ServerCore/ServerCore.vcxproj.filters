@@ -28,9 +28,6 @@
     <Filter Include="Utils\Enum">
       <UniqueIdentifier>{ae3b3901-8ca0-4665-939e-82e44292d9f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Network\Buffer">
-      <UniqueIdentifier>{a080f852-88b8-4c82-8191-83bccc82de26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network\Timer">
       <UniqueIdentifier>{f3096575-000f-4220-a802-fd322ae53fd0}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,9 @@
     </Filter>
     <Filter Include="Network\Packet">
       <UniqueIdentifier>{4a892ceb-7a30-4777-af1e-c10bd37c4205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Buffer">
+      <UniqueIdentifier>{a080f852-88b8-4c82-8191-83bccc82de26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -112,10 +112,10 @@
       <Filter>Utils\Enum</Filter>
     </ClInclude>
     <ClInclude Include="RecvBuffer.h">
-      <Filter>Network\Buffer</Filter>
+      <Filter>Utils\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="SendBuffer.h">
-      <Filter>Network\Buffer</Filter>
+      <Filter>Utils\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Network\Timer</Filter>
@@ -131,6 +131,12 @@
     </ClInclude>
     <ClInclude Include="packet.h">
       <Filter>Network\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferReader.h">
+      <Filter>Utils\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferWriter.h">
+      <Filter>Utils\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,10 +189,10 @@
       <Filter>Utils\Log</Filter>
     </ClCompile>
     <ClCompile Include="RecvBuffer.cpp">
-      <Filter>Network\Buffer</Filter>
+      <Filter>Utils\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="SendBuffer.cpp">
-      <Filter>Network\Buffer</Filter>
+      <Filter>Utils\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Network\Timer</Filter>
@@ -199,6 +205,12 @@
     </ClCompile>
     <ClCompile Include="CoreTLS.cpp">
       <Filter>Main\ThreadLocal</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferReader.cpp">
+      <Filter>Utils\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferWriter.cpp">
+      <Filter>Utils\Buffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

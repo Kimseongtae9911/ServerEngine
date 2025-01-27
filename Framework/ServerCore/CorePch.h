@@ -31,5 +31,6 @@
 #include "ObjectPool.h"
 #include "TypeCast.h"
 #include "SendBuffer.h"
+#include "Session.h"
 
 #include "packet.h"

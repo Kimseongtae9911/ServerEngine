@@ -2,7 +2,6 @@
 #include "Acceptor.h"
 #include "SocketUtils.h"
 #include "MemoryManager.h"
-#include "Session.h"
 #include "Service.h"
 
 Acceptor::~Acceptor()

@@ -1,14 +1,15 @@
 ﻿#include "pch.h"
 #include "Service.h"
-#include "Session.h"
 #include "ThreadManager.h"
+#include "BufferReader.h"
+#include "ServerPacketHandler.h"
 
 using boost::asio::ip::tcp;
 
-class ServerSession : public Session
+class ServerSession : public PacketSession
 {
 public:
-    ServerSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) {}
+    ServerSession(tcpSocket _socket, boost::asio::io_context& _context) : PacketSession(std::move(_socket), _context) {}
 
     ~ServerSession() {
         CLInfo("ServerSession Release");
@@ -26,11 +27,10 @@ public:
 
     void ParsePacket(uint8* _buffer, int32 _len) override
     {
+        PacketSessionRef session = GetPacketSessionRef();
         PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
-        char recvBuffer[4096];
-        ::memcpy_s(recvBuffer, 4096, &_buffer[4], header->size - sizeof(PacketHeader));
 
-        CLInfo("Recv Packet. Msg={}, Protocol= {}, Len={}", recvBuffer, header->protocol, header->size);
+        ServerPacketHandler::HandlePacket(session, _buffer, _len);
     }
 
     void OnSendPacket(int32 _len) override
@@ -41,6 +41,8 @@ public:
 
 int main()
 {
+    ServerPacketHandler::Init();
+
     boost::asio::io_context context;
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -50,7 +52,7 @@ int main()
         [](tcpSocket _socket, boost::asio::io_context& _context) {
             return CreateSharedObj<ServerSession>(std::move(_socket), _context);
         },
-        1000	// Max Session Count (todo: 구현해야함)
+        1	// Max Session Count (todo: 구현해야함)
     );
 
     if (false == service->ServiceStart(context))

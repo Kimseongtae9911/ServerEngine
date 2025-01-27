@@ -8,6 +8,7 @@ public:
 	~SendBuffer();
 
 	uint8_t* GetBuffer() { return m_buffer; }
+	uint32 GetAllocSize() { return m_allocSize; }
 	uint32 GetWriteSize() { return m_writeSize; }
 	void Close(uint32 _writeSize);
 

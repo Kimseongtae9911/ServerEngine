@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Service.h"
-#include "Session.h"
 
 Service::Service(ServiceType _type, const NetAddress& _netAddress, SessionFactory _sessionFactory, int32 _maxSessionCount)
 	: m_type(_type), m_netAddress(_netAddress), m_sessionFactory(_sessionFactory), m_maxSessionCount(_maxSessionCount)
