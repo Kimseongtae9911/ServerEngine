@@ -11,5 +11,8 @@ public:
 	void OnDisconnected() override;
 	void ParsePacket(uint8* _buffer, int32 _len) override;
 	void OnSendPacket(int32 _len) override;
+
+public:
+	StVector<PlayerRef> m_players;
 };
 

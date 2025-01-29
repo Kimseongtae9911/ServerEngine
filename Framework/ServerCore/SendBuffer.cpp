@@ -63,9 +63,7 @@ SendBufRef SendBufferPool::UseChunk(uint32 _size)
 	{
 		LSendBufferChunk = Pop();
 		LSendBufferChunk->Reset();
-	}
-
-	CLDebug("Free Chunk Size: {}", LSendBufferChunk->GetFreeSize());
+	}	
 
 	return LSendBufferChunk->Open(_size);
 }

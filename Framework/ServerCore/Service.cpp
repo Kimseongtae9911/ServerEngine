@@ -14,6 +14,15 @@ void Service::CloseService()
 {
 }
 
+void Service::BroadcastPacket(SendBufRef _sendBuffer)
+{
+	WRITE_LOCK;
+	for (const auto& session : m_sessions)
+	{
+		session->SendPacket(_sendBuffer);
+	}
+}
+
 SessionRef Service::CreateSession(tcpSocket& _socket, boost::asio::io_context& _context)
 {
 	return m_sessionFactory(std::move(_socket), _context);

@@ -10,23 +10,32 @@ bool Handler_INVALID(PacketSessionRef& _session, uint8* _buffer, int32 _len)
     return true;
 }
 
-bool Handler_S_TEST(PacketSessionRef& _session, Protocol::S_TEST& _pkt)
+bool Handler_S_LOGIN(PacketSessionRef& _session, Protocol::S_LOGIN& _pkt)
 {
-    std::cout << _pkt.id();
+    if (_pkt.success() == false)
+        return false;
 
-    CLLog("{}, {}, {}", _pkt.id(), _pkt.hp(), _pkt.attack());
-    CLLog("Bufsize:", _pkt.buffs_size());
-
-    for (auto& buf : _pkt.buffs())
+    if(_pkt.players().size() == 0)
     {
-        CLLog("BUFINFO : {}, {}", buf.buffid(), buf.remaintime());
-        CLLog("VICTIMS : {}", buf.victims_size());
 
-        for (auto& vic : buf.victims())
-        {
-            CLLog("{}", vic);
-        }
     }
+
+    Protocol::C_ENTER_GAME pkt;
+    pkt.set_playerindex(0);
+    auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+    _session->SendPacket(sendBuffer);
+
+    return true;
+}
+
+bool Handler_S_ENTER_GAME(PacketSessionRef& _session, Protocol::S_ENTER_GAME& _pkt)
+{
+    return true;
+}
+
+bool Handler_S_CHAT(PacketSessionRef& _session, Protocol::S_CHAT& _pkt)
+{
+    CLInfo("{}", _pkt.msg());
 
     return true;
 }

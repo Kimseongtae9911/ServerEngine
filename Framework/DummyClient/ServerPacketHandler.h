@@ -6,15 +6,18 @@ extern PacketHandlerFunc GPacketHandler[std::numeric_limits<uint16>::max()];
 
 enum : uint16
 {
-	PKT_C_TEST = 1000,
-	PKT_C_MOVE = 1001,
-	PKT_S_TEST = 1002,
-	PKT_S_LOGIN = 1003,
+	PKT_C_LOGIN = 1000,
+	PKT_S_LOGIN = 1001,
+	PKT_C_ENTER_GAME = 1002,
+	PKT_S_ENTER_GAME = 1003,
+	PKT_C_CHAT = 1004,
+	PKT_S_CHAT = 1005,
 };
 
 bool Handler_INVALID(PacketSessionRef& _session, uint8* _buffer, int32 _len);
-bool Handler_S_TEST(PacketSessionRef& _session, Protocol::S_TEST&_pkt);
 bool Handler_S_LOGIN(PacketSessionRef& _session, Protocol::S_LOGIN&_pkt);
+bool Handler_S_ENTER_GAME(PacketSessionRef& _session, Protocol::S_ENTER_GAME&_pkt);
+bool Handler_S_CHAT(PacketSessionRef& _session, Protocol::S_CHAT&_pkt);
 
 class ServerPacketHandler
 {
@@ -25,8 +28,9 @@ public:
 		{
 			GPacketHandler[i] = Handler_INVALID;
 		}
-		GPacketHandler[PKT_S_TEST] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::S_TEST>(Handler_S_TEST, _session, _buffer, _len); };
 		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::S_LOGIN>(Handler_S_LOGIN, _session, _buffer, _len); };
+		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::S_ENTER_GAME>(Handler_S_ENTER_GAME, _session, _buffer, _len); };
+		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::S_CHAT>(Handler_S_CHAT, _session, _buffer, _len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& _session, uint8* _buffer, int32 _len)
@@ -34,8 +38,9 @@ public:
 		PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
 		return GPacketHandler[header->protocol](_session, _buffer, _len);
 	}
-	static SendBufRef MakeSendBuffer(Protocol::C_TEST& _pkt) { return MakeSendBuffer(_pkt, PKT_C_TEST); }
-	static SendBufRef MakeSendBuffer(Protocol::C_MOVE& _pkt) { return MakeSendBuffer(_pkt, PKT_C_MOVE); }
+	static SendBufRef MakeSendBuffer(Protocol::C_LOGIN& _pkt) { return MakeSendBuffer(_pkt, PKT_C_LOGIN); }
+	static SendBufRef MakeSendBuffer(Protocol::C_ENTER_GAME& _pkt) { return MakeSendBuffer(_pkt, PKT_C_ENTER_GAME); }
+	static SendBufRef MakeSendBuffer(Protocol::C_CHAT& _pkt) { return MakeSendBuffer(_pkt, PKT_C_CHAT); }
 
 private:
 	template<class PacketType, class ProcessFunc>

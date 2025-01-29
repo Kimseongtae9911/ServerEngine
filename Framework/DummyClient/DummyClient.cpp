@@ -18,6 +18,12 @@ public:
     void OnConnected() override
     {
         CLInfo("Client{} Connected To Server", m_id);
+
+        m_service->AddSession(shared_from_this());
+
+        Protocol::C_LOGIN pkt;
+        auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+        SendPacket(sendBuffer);
     }
 
     void OnDisconnected() override
@@ -34,8 +40,7 @@ public:
     }
 
     void OnSendPacket(int32 _len) override
-    {
-        CLInfo("Dummy Client{} Send Packet. Len={}", m_id, _len);
+    {        
     }
 };
 
@@ -52,7 +57,7 @@ int main()
         [](tcpSocket _socket, boost::asio::io_context& _context) {
             return CreateSharedObj<ServerSession>(std::move(_socket), _context);
         },
-        1	// Max Session Count (todo: 구현해야함)
+        100	// Max Session Count (todo: 구현해야함)
     );
 
     if (false == service->ServiceStart(context))
@@ -63,6 +68,16 @@ int main()
             CLInfo("io thread start. ThreadId={}", LThreadId);
             context.run();
             });
+    }
+
+    Protocol::C_CHAT pkt;
+    pkt.set_msg("Hello World!");
+    auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+
+    while (true)
+    {
+        service->BroadcastPacket(sendBuffer);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     GThreadManager->JoinThreads();

@@ -18,6 +18,7 @@ public:
 	virtual bool	ServiceStart(boost::asio::io_context& _context, int32 _count = 1) abstract;
 	virtual void	CloseService();
 
+	void				BroadcastPacket(SendBufRef _sendBuffer);
 	SessionRef			CreateSession(tcpSocket& _socket, boost::asio::io_context& _context);
 	void				AddSession(SessionRef _session);
 	void				ReleaseSession(SessionRef _session);
