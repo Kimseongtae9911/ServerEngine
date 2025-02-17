@@ -60,7 +60,7 @@ bool Handler_C_ENTER_GAME(PacketSessionRef& _session, Protocol::C_ENTER_GAME& _p
 	uint64 index = _pkt.playerindex();
 
 	PlayerRef player = gameSession->m_players[index];
-	GRoom.EnterRoom(player);
+	GRoom->ExecuteAsync(&Room::EnterRoom, player);
 
 	Protocol::S_ENTER_GAME pkt;
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(pkt);
@@ -75,9 +75,8 @@ bool Handler_C_CHAT(PacketSessionRef& _session, Protocol::C_CHAT& _pkt)
 
 	Protocol::S_CHAT pkt;
 	pkt.set_msg(_pkt.msg());
-	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(pkt);
-
-	GRoom.BroadcastPacket(sendBuffer);
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(pkt);	
+	GRoom->ExecuteAsync(&Room::BroadcastPacket, sendBuffer);
 
 	return true;
 }

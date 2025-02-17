@@ -25,6 +25,9 @@ using PacketSessionRef = std::shared_ptr<class PacketSession>;
 using AcceptorRef = std::shared_ptr<class Acceptor>;
 using SendBufRef = std::shared_ptr<class SendBuffer>;
 using SendBufChunkRef = std::shared_ptr<class SendBufferChunk>;
+using JobRef = std::shared_ptr<class Job>;
+using JobSerializerRef = std::shared_ptr<class JobSerializer>;
+using ServerServiceRef = std::shared_ptr<class ServerService>;
 
 /*--------------
 	 Locks

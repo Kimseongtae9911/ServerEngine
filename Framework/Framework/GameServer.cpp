@@ -8,6 +8,7 @@
 #include "BufferWriter.h"
 #include "ClientPacketHandler.h"
 #include "Protocol.pb.h"
+#include "Room.h"
 
 class GameTimer : public Timer
 {
@@ -24,6 +25,22 @@ public:
             session->OnTimer();
     }
 };
+
+void DoWorkerJob(ServerServiceRef& _service)
+{
+    while (true)
+    {
+        LEndTickCount = ::GetTickCount64() + 64;
+
+        //네트워크 처리 코드 context.run
+
+        // 글로벌 큐
+        ThreadManager::DoGlobalQueueWork();
+
+        //context.run을 수행 및 타임아웃이 걸리면 다음 수행
+        //GlobalQueueWork는 64만큼 수행?
+    }
+}
 
 int main()
 {

@@ -1,15 +1,15 @@
 #pragma once
-class Room
+#include "JobSerializer.h"
+
+class Room : public JobSerializer
 {
 public:
 	void EnterRoom(PlayerRef _player);
 	void LeaveRoom(PlayerRef _player);
 	void BroadcastPacket(SendBufRef _sendBuffer);
 
-
 private:
-	USE_LOCK;
 	std::map<uint64, PlayerRef> m_players;
 };
 
-extern Room GRoom;
+extern std::shared_ptr<Room> GRoom;

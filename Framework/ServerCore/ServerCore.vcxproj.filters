@@ -43,6 +43,9 @@
     <Filter Include="Utils\Buffer">
       <UniqueIdentifier>{a080f852-88b8-4c82-8191-83bccc82de26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Job">
+      <UniqueIdentifier>{6be0ca8d-ee17-49f7-a7f9-26dc2a8689a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.h">
@@ -138,6 +141,18 @@
     <ClInclude Include="BufferWriter.h">
       <Filter>Utils\Buffer</Filter>
     </ClInclude>
+    <ClInclude Include="JobQueue.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Job.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="JobSerializer.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalQueue.h">
+      <Filter>Job</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoreGlobal.cpp">
@@ -211,6 +226,18 @@
     </ClCompile>
     <ClCompile Include="BufferWriter.cpp">
       <Filter>Utils\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Job.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="JobQueue.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="JobSerializer.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalQueue.cpp">
+      <Filter>Job</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
