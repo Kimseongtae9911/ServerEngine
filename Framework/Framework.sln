@@ -13,6 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{F8AAA1B6
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PacketGenerator", "Tools\PacketGenerator\PacketGenerator.pyproj", "{A895AA44-3382-4024-BD8B-DFE155D8C2CD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HandlerTemplate", "HandlerTemplate", "{E421B86B-A5B3-4607-8E35-39761D2F5100}"
+	ProjectSection(SolutionItems) = preProject
+		Protocol\Templates\PacketHandler.h = Protocol\Templates\PacketHandler.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,7 +1,6 @@
 #pragma once
 #include "Protocol.pb.h"
 
-using PacketHandlerFunc = std::function<bool(PacketSessionRef&, uint8*, int32)>;
 extern PacketHandlerFunc GPacketHandler[std::numeric_limits<uint16>::max()];
 
 enum : uint16
@@ -50,7 +49,9 @@ private:
 		if (false == pkt.ParseFromArray(_buffer + sizeof(PacketHeader), _len - sizeof(PacketHeader)))
 			return false;
 
-		return _func(_session, pkt);
+		GJobQueue->ExecuteAsync(_func(_session, pkt));
+
+		return true;
 	}
 
 	template<class T>

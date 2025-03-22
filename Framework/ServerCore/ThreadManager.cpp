@@ -2,7 +2,6 @@
 #include "ThreadManager.h"
 #include "CoreTLS.h"
 #include "CoreGlobal.h"
-#include "GlobalQueue.h"
 #include "JobSerializer.h"
 
 ThreadManager::ThreadManager()
@@ -45,20 +44,4 @@ void ThreadManager::InitTLS()
 void ThreadManager::DestroyTLS()
 {
 
-}
-
-void ThreadManager::DoGlobalQueueWork()
-{
-	while (true)
-	{
-		uint64 now = ::GetTickCount64();
-		if (now > LEndTickCount)
-			break;
-
-		JobSerializerRef jobQueue = GGlobalQueue->Pop();
-		if (nullptr == jobQueue)
-			break;
-
-		jobQueue->Execute();
-	}
 }

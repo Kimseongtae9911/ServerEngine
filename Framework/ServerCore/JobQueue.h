@@ -9,18 +9,19 @@ public:
 		m_jobs.push(_job);
 	}
 
-	T Pop()
+	bool Pop(T& _job)
 	{
 		if (m_jobs.empty())
-			return T();
+			return false;
 
 		T job;
 		if (m_jobs.try_pop(job))
 		{
-			return job;
+			_job = std::move(job);
+			return true;
 		}
 
-		return T();
+		return false;
 	}	
 
 	void Clear()

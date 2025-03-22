@@ -2,6 +2,7 @@
 
 #include "CorePch.h"
 #include "Enum.pb.h"
+#include "Protocol.pb.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "Debug\\ServerCore.lib")

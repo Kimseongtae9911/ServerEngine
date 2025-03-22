@@ -13,9 +13,7 @@ public:
 	void JoinThreads();
 
 	static void InitTLS();
-	static void DestroyTLS();
-		
-	static void DoGlobalQueueWork();
+	static void DestroyTLS();	
 
 private:
 	Mutex	m_lock;

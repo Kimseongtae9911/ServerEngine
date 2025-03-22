@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <tbb/concurrent_queue.h>
+#include <tbb/concurrent_unordered_map.h>
 
 /*
 	STL 컨테이너들의 allocator를 커스텀으로 사용
@@ -54,3 +55,6 @@ using StUMap = std::unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<std::pa
 
 template<typename Key, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
 using StUSet = std::unordered_set<Key, Hasher, KeyEq, StlAllocator<Key>>;
+
+template<typename Key, typename Type, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
+using StCUMap = tbb::concurrent_unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<Key>>;

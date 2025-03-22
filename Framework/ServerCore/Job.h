@@ -1,11 +1,11 @@
 #pragma once
 #include <functional>
 
-using CallbackType = std::function<void()>;
-
+template<typename T = void()>
 class Job
 {
 public:
+	using CallbackType = std::function<void()>;
 
 	Job(CallbackType&& _callback) : m_callback(_callback) {}
 

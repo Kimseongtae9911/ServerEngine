@@ -37,6 +37,7 @@ inline bool SocketUtils::InitializeSocket(T& _socket, bool _lingerEnable, int32 
 	}
 	catch (std::exception& e) {
 		//todo: 로그 추가
+		LError("err={}", e.what());
 		return false;
 	}
 }
@@ -51,6 +52,7 @@ inline bool SocketUtils::SetLinger(T& _socket, bool _enable, int32 _seconds)
 	}
 	catch (const std::exception& e) {
 		//todo: 로그 추가
+		LError("err={}", e.what());
 		return false;
 	}
 }
@@ -65,6 +67,7 @@ inline bool SocketUtils::SetReuseAddress(T& _socket, bool _enable)
 	}
 	catch (const std::exception& e) {
 		//todo: 로그 추가
+		LError("err={}", e.what());
 		return false;
 	}
 }
@@ -81,6 +84,7 @@ inline bool SocketUtils::SetReceiveBufferSize(T& _socket, int32 _size)
 	catch (std::exception& e)
 	{
 		//todo: 로그 추가
+		LError("err={}", e.what());
 		return false;
 	}
 }
@@ -97,6 +101,7 @@ inline bool SocketUtils::SetSendBufferSize(T& _socket, int32 _size)
 	catch (std::exception& e)
 	{
 		//todo: 로그 추가
+		LError("err={}", e.what());
 		return false;
 	}
 }

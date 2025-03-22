@@ -32,6 +32,6 @@
 #include "TypeCast.h"
 #include "SendBuffer.h"
 #include "Session.h"
-#include "JobQueue.h"
+#include "JobSerializer.h"
 
 #include "packet.h"

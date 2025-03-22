@@ -2,12 +2,11 @@
 #include "CoreGlobal.h"
 #include "ThreadManager.h"
 #include "DeadLockProfiler.h"
-#include "GlobalQueue.h"
+#include "JobSerializer.h"
 
 ThreadManager* GThreadManager = nullptr;
 MemoryManager* GMemoryManager = nullptr;
 SendBufferPool* GSendBufferPool = nullptr;
-GlobalQueue* GGlobalQueue = nullptr;
 
 #if _DEBUG
 DeadLockProfiler* GDeadLockProfiler = nullptr;
@@ -20,8 +19,7 @@ public:
 	{
 		GThreadManager = new ThreadManager();
 		GMemoryManager = new MemoryManager();
-		GSendBufferPool = new SendBufferPool();
-		GGlobalQueue = new GlobalQueue();
+		GSendBufferPool = new SendBufferPool();		
 
 #if _DEBUG
 		GDeadLockProfiler = new DeadLockProfiler();
@@ -31,8 +29,7 @@ public:
 	{
 		delete GThreadManager;
 		delete GMemoryManager;
-		delete GSendBufferPool;
-		delete GGlobalQueue;
+		delete GSendBufferPool;		
 
 #if _DEBUG
 		delete GDeadLockProfiler;

@@ -50,7 +50,9 @@ private:
 		if (false == pkt.ParseFromArray(_buffer + sizeof(PacketHeader), _len - sizeof(PacketHeader)))
 			return false;
 
-		return _func(_session, pkt);
+		GJobQueue->ExecuteAsync(_func(_session, pkt));
+
+		return true;
 	}
 
 	template<class T>

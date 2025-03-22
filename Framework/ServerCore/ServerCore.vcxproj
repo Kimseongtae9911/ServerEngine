@@ -174,7 +174,6 @@
     <ClInclude Include="CoreTLS.h" />
     <ClInclude Include="DeadLockProfiler.h" />
     <ClInclude Include="ErrorCode.h" />
-    <ClInclude Include="GlobalQueue.h" />
     <ClInclude Include="Job.h" />
     <ClInclude Include="JobQueue.h" />
     <ClInclude Include="JobSerializer.h" />
@@ -208,7 +207,6 @@
     <ClCompile Include="CorePch.cpp" />
     <ClCompile Include="CoreTLS.cpp" />
     <ClCompile Include="DeadLockProfiler.cpp" />
-    <ClCompile Include="GlobalQueue.cpp" />
     <ClCompile Include="Job.cpp" />
     <ClCompile Include="JobQueue.cpp" />
     <ClCompile Include="JobSerializer.cpp" />
