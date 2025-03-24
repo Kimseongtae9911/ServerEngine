@@ -1,7 +1,7 @@
 #pragma once
 #include "NetAddress.h"
 #include "RecvBuffer.h"
-#include <Protobuf/Include/google/protobuf/message.h>
+#include "JobSerializer.h"
 
 class Service;
 
@@ -62,15 +62,16 @@ protected:
 class PacketSession : public Session
 {
 public:
-	using PacketRef = std::shared_ptr<google::protobuf::Message>;
-
-	PacketSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) {}
+	PacketSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) 
+	{
+		m_packetQueue.Init(GetPacketSessionRef());
+	}
 	virtual ~PacketSession() {}
 
 	PacketSessionRef	GetPacketSessionRef() { return static_pointer_cast<PacketSession>(shared_from_this()); }
-	void PushHandler(std::pair<uint8*, int32>& _job) {  }
+	void PushHandler(PacketHeader* _packet) { m_packetQueue.PushJob(_packet); }
 
 private:
-	SessionQueue<PacketRef> m_packetQueue;
+	SessionQueue m_packetQueue;
 	bool m_isRecvNewPkt = false;
 };

@@ -87,7 +87,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Lib\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Lib\tbb\include;$(SolutionDir)Lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Lib\Protobuf\include;$(SolutionDir)Lib\tbb\include;$(SolutionDir)Lib;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\tbb\lib\intel64\vc14;$(SolutionDir)Lib\CommonLib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

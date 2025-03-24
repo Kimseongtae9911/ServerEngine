@@ -57,4 +57,4 @@ template<typename Key, typename Hasher = std::hash<Key>, typename KeyEq = std::e
 using StUSet = std::unordered_set<Key, Hasher, KeyEq, StlAllocator<Key>>;
 
 template<typename Key, typename Type, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
-using StCUMap = tbb::concurrent_unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<Key>>;
+using StCUMap = tbb::concurrent_unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<std::pair<Key, Type>>>;

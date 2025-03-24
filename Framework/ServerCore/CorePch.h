@@ -25,6 +25,8 @@
 #include "Singleton.h"
 #include "Logger.h"
 
+#include "packet.h"
+
 #include "Lock.h"
 #include "MemoryManager.h"
 
@@ -33,5 +35,3 @@
 #include "SendBuffer.h"
 #include "Session.h"
 #include "JobSerializer.h"
-
-#include "packet.h"

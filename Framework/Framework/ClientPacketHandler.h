@@ -1,7 +1,6 @@
 #pragma once
 #include "Protocol.pb.h"
 
-using PacketHandlerFunc = std::function<bool(PacketSessionRef&, uint8*, int32)>;
 extern PacketHandlerFunc GPacketHandler[std::numeric_limits<uint16>::max()];
 
 enum : uint16

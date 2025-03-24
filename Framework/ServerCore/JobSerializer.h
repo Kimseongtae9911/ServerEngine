@@ -1,6 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "JobQueue.h"
+#include "Session.h"
 
 // 잡큐를 사용하는 클래스들은 해당 클래스를 상속
 template<typename CallbackType = void()>
@@ -61,16 +62,20 @@ inline void JobSerializer<CallbackType>::Execute()
 	m_jobCount.fetch_sub(curJobCount);
 }
 
-// todo: 공통 잡디스패쳐를 만들기
-template<class PacketType>
+// todo: 공통 잡디스패쳐를 만들기, PacketDispatcher는 전역으로 사용중이라서 session.h도 모두 include가 필요함
 class PacketDispatcher
 {
 public:
-	void PushJob(PacketSessionRef _session, const PacketType& pkt)
+	void PushJob(PacketSessionRef _session, PacketHeader* _header)
 	{
 		// _session에 pkt를 pushJob
-		_session->PushHandler(pkt);
+		//_session->PushHandler(_header);
 
+		m_jobQueue.PushJob(_session);
+	}
+
+	void PushJob(PacketSessionRef _session)
+	{
 		m_jobQueue.PushJob(_session);
 	}
 
@@ -92,22 +97,42 @@ private:
 	StCUMap<int32, PacketSessionRef> m_sessionContainer;
 };
 
-template<class PacketType>
+using PacketHandlerFunc = std::function<bool(PacketSessionRef&, uint8*, int32)>;
+extern PacketHandlerFunc GPacketHandler[std::numeric_limits<uint16>::max()];
+
 class SessionQueue
 {
-	void PushJob(PacketSessionRef _session, const PacketType& pkt)
-	{
-		// _session에 pkt를 pushJob
-		_session->PushHandler(pkt);
+public:
+	void Init(PacketSessionRef _session) { m_owner = _session; }
 
-		m_jobQueue.PushJob(_session);
+	void PushJob(PacketHeader* _header)
+	{
+		m_jobQueue.PushJob(_header);
 	}
 
 	void ProcessJob()
 	{
+		// 해당 세션의 추가 패킷이 와도 현재 잡큐의 있는 개수만큼만 처리
+		// 패킷을 처리하는 스레드는 해당 함수를 수행하는 것 뿐..
+		auto sessionRef = m_owner.lock();
+		if (nullptr == sessionRef)
+			return;
 
+		int32 curJobCnt = m_jobQueue.UnSafeSize();
+		for (int32 i = 0; i < curJobCnt; ++i)
+		{
+			PacketHeader* header;
+			if (m_jobQueue.Pop(header))
+			{
+				uint8* buffer = reinterpret_cast<uint8*>(header);
+				GPacketHandler[header->protocol](sessionRef, buffer, header->size);
+			}
+		}
+
+		// 다시 PacketDispatcher로 세션 넣기
 	}
 
 private:
-	JobQueue<PacketType> m_jobQueue;
+	JobQueue<PacketHeader*> m_jobQueue; 
+	std::weak_ptr<PacketSession> m_owner;
 };

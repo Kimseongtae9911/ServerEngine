@@ -27,14 +27,14 @@ public:
 		}
 
 {%- for pkt in parser.recv_pkt %}
-		GPacketHandler[PKT_{{pkt.name}}] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::{{pkt.name}}>(Handler_{{pkt.name}}, _session, _buffer, _len); };
+		GPacketHandler[PKT_{{pkt.name}}] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_{{pkt.name}}, _session, _buffer, _len; };
 {%- endfor %}
 	}
 
-	static bool HandlePacket(PacketSessionRef& _session, uint8* _buffer, int32 _len)
+	static bool HandlePacket(PacketSessionRef& _session, uint8* _buffer)
 	{
 		PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
-		return GPacketHandler[header->protocol](_session, _buffer, _len);
+		GPacketQueue->PushJob(_session, header);
 	}
 
 {%- for pkt in parser.send_pkt %}
@@ -42,18 +42,6 @@ public:
 {%- endfor %}
 
 private:
-	template<class PacketType, class ProcessFunc>
-	static bool HandlerPacket(ProcessFunc _func, PacketSessionRef& _session, uint8* _buffer, int32 _len)
-	{
-		PacketType pkt;
-		if (false == pkt.ParseFromArray(_buffer + sizeof(PacketHeader), _len - sizeof(PacketHeader)))
-			return false;
-
-		GJobQueue->ExecuteAsync(_func(_session, pkt));
-
-		return true;
-	}
-
 	template<class T>
 	static SendBufRef MakeSendBuffer(T& _pkt, uint16 _pktId)
 	{
