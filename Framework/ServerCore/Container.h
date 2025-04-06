@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Types.h"
 #include "Allocator.h"
@@ -15,9 +15,9 @@
 #include <tbb/concurrent_unordered_map.h>
 
 /*
-	STL ÄÁÅ×ÀÌ³ÊµéÀÇ allocator¸¦ Ä¿½ºÅÒÀ¸·Î »ç¿ë
-	¸Å¹ø »ç¿ëÇÒ¶§¸¶´Ù allocator¸¦ ³Ö´Â °ÍÀº Èûµé±â ¶§¹®¿¡ ÄÁÅ×ÀÌ³Êµé Á¤ÀÇ
-	³×ÀÌ¹Ö ÄÁº¥¼ÇÀº ¿ì¼± ¼ºÅÂÀÇ ¾Õ±ÛÀÚ st..
+	STL ì»¨í…Œì´ë„ˆë“¤ì„ allocatorë¥¼ ì‚¬ìš©í•˜ë„ë¡ ì¬ì •ì˜
+	ë©”ëª¨ë¦¬ í• ë‹¹ì„ ì»¤ìŠ¤í„°ë§ˆì´ì§•í•˜ê¸° ìœ„í•´ allocatorê°€ ìˆëŠ” ë²„ì „ì˜ ì»¨í…Œì´ë„ˆ íƒ€ì… ì •ì˜
+	ê¸°ë³¸ ì»¨í…Œì´ë„ˆë“¤ì€ ìš°ì„ ìˆœìœ„ê°€ ë‚®ì€ st..ë¡œ ì‹œì‘
 */
 
 template<typename Type, uint32 Size>
@@ -57,4 +57,4 @@ template<typename Key, typename Hasher = std::hash<Key>, typename KeyEq = std::e
 using StUSet = std::unordered_set<Key, Hasher, KeyEq, StlAllocator<Key>>;
 
 template<typename Key, typename Type, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
-using StCUMap = tbb::concurrent_unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<std::pair<Key, Type>>>;
+using StCUMap = tbb::concurrent_unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<std::pair<const Key, Type>>>;

@@ -1,11 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "Job.h"
 #include "JobQueue.h"
-#include "Session.h"
 
-// ÀâÅ¥¸¦ »ç¿ëÇÏ´Â Å¬·¡½ºµéÀº ÇØ´ç Å¬·¡½º¸¦ »ó¼Ó
+// ì¡íë¥¼ ì‚¬ìš©í•˜ëŠ” í´ë˜ìŠ¤ë“¤ì€ í•´ë‹¹ í´ë˜ìŠ¤ë¥¼ ìƒì†
 template<typename CallbackType = void()>
-class JobSerializer : std::enable_shared_from_this<JobSerializer<CallbackType>>
+class JobSerializer : public std::enable_shared_from_this<JobSerializer<CallbackType>>
 {
 public:
 	using JobRef = std::shared_ptr<class Job<CallbackType>>;
@@ -17,7 +16,7 @@ public:
 	}
 
 	template<typename T, typename Ret, typename... Args>
-	void ExecuteAsync(Ret(T::*_memFunc)(Args...), Args... args)
+	void ExecuteAsync(Ret(T::* _memFunc)(Args...), Args... args)
 	{
 		std::shared_ptr<T> owner = std::static_pointer_cast<T>(this->shared_from_this());
 		PushJob(ObjectPool<TJob>::MakeObject(owner, _memFunc, std::forward<Args>(args)...));
@@ -62,13 +61,14 @@ inline void JobSerializer<CallbackType>::Execute()
 	m_jobCount.fetch_sub(curJobCount);
 }
 
-// todo: °øÅë Àâµğ½ºÆĞÃÄ¸¦ ¸¸µé±â, PacketDispatcher´Â Àü¿ªÀ¸·Î »ç¿ëÁßÀÌ¶ó¼­ session.hµµ ¸ğµÎ include°¡ ÇÊ¿äÇÔ
+class PacketSession;
+// todo: ê³µí†µ ì¡ë””ìŠ¤íŒ¨ì³ë¥¼ ë§Œë“¤ê¸°, PacketDispatcherëŠ” ì „ì—­ìœ¼ë¡œ ì‚¬ìš©ì¤‘ì´ë¼ì„œ session.hë„ ëª¨ë‘ includeê°€ í•„ìš”í•¨
 class PacketDispatcher
 {
 public:
 	void PushJob(PacketSessionRef _session, PacketHeader* _header)
 	{
-		// _session¿¡ pkt¸¦ pushJob
+		// _sessionì— pktë¥¼ pushJob
 		//_session->PushHandler(_header);
 
 		m_jobQueue.PushJob(_session);
@@ -79,18 +79,7 @@ public:
 		m_jobQueue.PushJob(_session);
 	}
 
-	void ProcessJob()
-	{
-		PacketSessionRef session;
-		if (!m_jobQueue.Pop(session))
-		{
-			return;
-		}
-
-		auto it = m_sessionContainer.find(session->GetId());
-		if (it == m_sessionContainer.end())
-			m_sessionContainer.emplace(session->GetId(), session);	
-	}
+	void ProcessJob();
 
 private:
 	JobQueue<PacketSessionRef> m_jobQueue;
@@ -112,8 +101,8 @@ public:
 
 	void ProcessJob()
 	{
-		// ÇØ´ç ¼¼¼ÇÀÇ Ãß°¡ ÆĞÅ¶ÀÌ ¿Íµµ ÇöÀç ÀâÅ¥ÀÇ ÀÖ´Â °³¼ö¸¸Å­¸¸ Ã³¸®
-		// ÆĞÅ¶À» Ã³¸®ÇÏ´Â ½º·¹µå´Â ÇØ´ç ÇÔ¼ö¸¦ ¼öÇàÇÏ´Â °Í »Ó..
+		// í•´ë‹¹ ì„¸ì…˜ì˜ ì¶”ê°€ íŒ¨í‚·ì´ ì™€ë„ í˜„ì¬ ì¡íì˜ ìˆëŠ” ê°œìˆ˜ë§Œí¼ë§Œ ì²˜ë¦¬
+		// íŒ¨í‚·ì„ ì²˜ë¦¬í•˜ëŠ” ìŠ¤ë ˆë“œëŠ” í•´ë‹¹ í•¨ìˆ˜ë¥¼ ìˆ˜í–‰í•˜ëŠ” ê²ƒ ë¿..
 		auto sessionRef = m_owner.lock();
 		if (nullptr == sessionRef)
 			return;
@@ -129,10 +118,12 @@ public:
 			}
 		}
 
-		// ´Ù½Ã PacketDispatcher·Î ¼¼¼Ç ³Ö±â
+		// ë‹¤ì‹œ PacketDispatcherë¡œ ì„¸ì…˜ ë„£ê¸°
+		GPacketQueue->PushJob(sessionRef);
 	}
 
 private:
-	JobQueue<PacketHeader*> m_jobQueue; 
+	JobQueue<PacketHeader*> m_jobQueue;
 	std::weak_ptr<PacketSession> m_owner;
 };
+

@@ -27,33 +27,21 @@ public:
 		{
 			GPacketHandler[i] = Handler_INVALID;
 		}
-		GPacketHandler[PKT_C_LOGIN] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::C_LOGIN>(Handler_C_LOGIN, _session, _buffer, _len); };
-		GPacketHandler[PKT_C_ENTER_GAME] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::C_ENTER_GAME>(Handler_C_ENTER_GAME, _session, _buffer, _len); };
-		GPacketHandler[PKT_C_CHAT] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlerPacket<Protocol::C_CHAT>(Handler_C_CHAT, _session, _buffer, _len); };
+		GPacketHandler[PKT_C_LOGIN] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_C_LOGIN, _session, _buffer, _len; };
+		GPacketHandler[PKT_C_ENTER_GAME] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_C_ENTER_GAME, _session, _buffer, _len; };
+		GPacketHandler[PKT_C_CHAT] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_C_CHAT, _session, _buffer, _len; };
 	}
 
-	static bool HandlePacket(PacketSessionRef& _session, uint8* _buffer, int32 _len)
+	static bool HandlePacket(PacketSessionRef& _session, uint8* _buffer)
 	{
 		PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
-		return GPacketHandler[header->protocol](_session, _buffer, _len);
+		GPacketQueue->PushJob(_session, header);
 	}
 	static SendBufRef MakeSendBuffer(Protocol::S_LOGIN& _pkt) { return MakeSendBuffer(_pkt, PKT_S_LOGIN); }
 	static SendBufRef MakeSendBuffer(Protocol::S_ENTER_GAME& _pkt) { return MakeSendBuffer(_pkt, PKT_S_ENTER_GAME); }
 	static SendBufRef MakeSendBuffer(Protocol::S_CHAT& _pkt) { return MakeSendBuffer(_pkt, PKT_S_CHAT); }
 
 private:
-	template<class PacketType, class ProcessFunc>
-	static bool HandlerPacket(ProcessFunc _func, PacketSessionRef& _session, uint8* _buffer, int32 _len)
-	{
-		PacketType pkt;
-		if (false == pkt.ParseFromArray(_buffer + sizeof(PacketHeader), _len - sizeof(PacketHeader)))
-			return false;
-
-		GJobQueue->ExecuteAsync(_func(_session, pkt));
-
-		return true;
-	}
-
 	template<class T>
 	static SendBufRef MakeSendBuffer(T& _pkt, uint16 _pktId)
 	{

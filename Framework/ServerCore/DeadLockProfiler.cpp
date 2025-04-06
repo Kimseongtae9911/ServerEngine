@@ -53,7 +53,7 @@ void DeadLockProfiler::CheckCycle()
 	const auto lockCount = static_cast<int32>(m_nameToId.size());
 	m_discoverOrder = std::vector<int32>(lockCount, -1);
 	m_discoverdCount = 0;
-	m_finished = std::vector<bool>(lockCount, -1);
+	m_finished = std::vector<bool>(lockCount, false);
 	m_parent = std::vector<int32>(lockCount, -1);
 
 	for (int32 lockId = 0; lockId < lockCount; ++lockId)

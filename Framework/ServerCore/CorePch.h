@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 //boost
 #include <boost/asio.hpp>
@@ -33,5 +33,5 @@
 #include "ObjectPool.h"
 #include "TypeCast.h"
 #include "SendBuffer.h"
-#include "Session.h"
 #include "JobSerializer.h"
+#include "Session.h"

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ThreadManager.h"
 #include "Memory.h"
 #include "NetworkCore.h"
@@ -7,7 +7,6 @@
 #include "GameSessionManager.h"
 #include "BufferWriter.h"
 #include "ClientPacketHandler.h"
-#include "Room.h"
 
 class GameTimer : public Timer
 {
@@ -41,7 +40,7 @@ int main()
         [](tcpSocket _socket, boost::asio::io_context& _context) {
             return CreateSharedObj<GameSession>(std::move(_socket), _context);
         },
-        100	// Max Session Count (todo: ±¸ÇöÇØ¾ßÇÔ)
+        100	// Max Session Count (todo: êµ¬í˜„í•´ì•¼í•¨)
     );
 
     NetworkCore server;

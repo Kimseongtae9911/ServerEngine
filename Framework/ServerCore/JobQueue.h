@@ -29,7 +29,7 @@ public:
 		m_jobs.clear();
 	}
 
-	int32 UnSafeSize() { return m_jobs.unsafe_size(); }
+	uint64 UnSafeSize() { return m_jobs.unsafe_size(); }
 
 private:
 	tbb::concurrent_queue<T> m_jobs;

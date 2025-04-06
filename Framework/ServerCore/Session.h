@@ -1,7 +1,6 @@
 #pragma once
 #include "NetAddress.h"
 #include "RecvBuffer.h"
-#include "JobSerializer.h"
 
 class Service;
 
