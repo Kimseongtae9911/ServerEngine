@@ -21,10 +21,9 @@ void GameSession::OnDisconnected()
 
 void GameSession::ParsePacket(uint8* _buffer, int32 _len)
 {
-	PacketSessionRef session = GetPacketSessionRef();
-	PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
+	PacketSessionRef session = GetPacketSessionRef();	
 
-	ClientPacketHandler::HandlePacket(session, _buffer, _len);
+	ClientPacketHandler::HandlePacket(session, _buffer);
 }
 
 void GameSession::OnSendPacket(int32 _len)

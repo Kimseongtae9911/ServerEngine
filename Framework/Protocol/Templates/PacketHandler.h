@@ -31,7 +31,7 @@ public:
 {%- endfor %}
 	}
 
-	static bool HandlePacket(PacketSessionRef& _session, uint8* _buffer)
+	static void HandlePacket(PacketSessionRef& _session, uint8* _buffer)
 	{
 		PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
 		GPacketQueue->PushJob(_session, header);

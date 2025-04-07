@@ -16,14 +16,8 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{8e1cbf18-dcc6-41e3-b518-8918801c8b73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Memory\Object">
-      <UniqueIdentifier>{7227ceb5-239d-4deb-9251-f5bc7ea403be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network\Session">
       <UniqueIdentifier>{01c083a8-2d89-42b6-8d92-c0b02ceba16d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Log">
-      <UniqueIdentifier>{ac851980-499c-41d3-99ee-9ef0becf61d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\Enum">
       <UniqueIdentifier>{ae3b3901-8ca0-4665-939e-82e44292d9f4}</UniqueIdentifier>
@@ -46,6 +40,21 @@
     <Filter Include="Job">
       <UniqueIdentifier>{6be0ca8d-ee17-49f7-a7f9-26dc2a8689a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Memory\Pool">
+      <UniqueIdentifier>{0e1d62d4-a0b7-4743-91b3-5a12fe97863f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory\Allocator">
+      <UniqueIdentifier>{54f57bf0-d697-43a0-a2ac-0f4d27ae778c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Buffer\Send">
+      <UniqueIdentifier>{45891e12-f995-4692-bf97-5a3a1bb81e98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Buffer\Recv">
+      <UniqueIdentifier>{962746b9-4ee9-4b00-b1e9-4fed47cf1d2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Logger">
+      <UniqueIdentifier>{804cb985-c3cd-4d79-8fee-72bf997ab8a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.h">
@@ -57,157 +66,103 @@
     <ClInclude Include="CoreGlobal.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadManager.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="Lock.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="DeadLockProfiler.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="RefCounter.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Allocator.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryManager.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Container.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryPool.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectPool.h">
-      <Filter>Memory\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="TypeCast.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="SocketUtils.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="NetworkCore.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Session.h">
-      <Filter>Network\Session</Filter>
-    </ClInclude>
-    <ClInclude Include="Service.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="NetAddress.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Acceptor.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>Utils\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="ErrorCode.h">
-      <Filter>Utils\Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="RecvBuffer.h">
-      <Filter>Utils\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="SendBuffer.h">
-      <Filter>Utils\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Network\Timer</Filter>
-    </ClInclude>
     <ClInclude Include="CorePch.h">
       <Filter>Main\pch</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Main\pch</Filter>
     </ClInclude>
-    <ClInclude Include="CoreTLS.h">
+    <ClInclude Include="Job\Job.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Job\JobQueue.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Job\JobSerializer.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\ThreadLocal\CoreTLS.h">
       <Filter>Main\ThreadLocal</Filter>
     </ClInclude>
-    <ClInclude Include="packet.h">
+    <ClInclude Include="Memory\Pool\MemoryPool.h">
+      <Filter>Memory\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Pool\ObjectPool.h">
+      <Filter>Memory\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\Allocator\Allocator.h">
+      <Filter>Memory\Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryManager.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\RefCounter.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Container.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Common\Singleton.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Common\TypeCast.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Buffer\BufferReader.h">
+      <Filter>Utils\Buffer\Recv</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Buffer\RecvBuffer.h">
+      <Filter>Utils\Buffer\Recv</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Buffer\BufferWriter.h">
+      <Filter>Utils\Buffer\Send</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Buffer\SendBuffer.h">
+      <Filter>Utils\Buffer\Send</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\DeadLockProfiler.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\Lock.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\ThreadManager.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Session\Session.h">
+      <Filter>Network\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\Packet\packet.h">
       <Filter>Network\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="BufferReader.h">
-      <Filter>Utils\Buffer</Filter>
+    <ClInclude Include="Network\Timer\Timer.h">
+      <Filter>Network\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="BufferWriter.h">
-      <Filter>Utils\Buffer</Filter>
+    <ClInclude Include="Network\Acceptor.h">
+      <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="JobQueue.h">
-      <Filter>Job</Filter>
+    <ClInclude Include="Network\NetAddress.h">
+      <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="Job.h">
-      <Filter>Job</Filter>
+    <ClInclude Include="Network\NetworkCore.h">
+      <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="JobSerializer.h">
-      <Filter>Job</Filter>
+    <ClInclude Include="Network\Service.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\SocketUtils.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Log\Logger.h">
+      <Filter>Utils\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Enum\ErrorCode.h">
+      <Filter>Utils\Enum</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoreGlobal.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadManager.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="Lock.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="DeadLockProfiler.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="RefCounter.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="Allocator.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryManager.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryPool.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectPool.cpp">
-      <Filter>Memory\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="SocketUtils.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkCore.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Session.cpp">
-      <Filter>Network\Session</Filter>
-    </ClCompile>
-    <ClCompile Include="Service.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="NetAddress.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Acceptor.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Utils\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="RecvBuffer.cpp">
-      <Filter>Utils\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="SendBuffer.cpp">
-      <Filter>Utils\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Network\Timer</Filter>
     </ClCompile>
     <ClCompile Include="CorePch.cpp">
       <Filter>Main\pch</Filter>
@@ -215,23 +170,77 @@
     <ClCompile Include="pch.cpp">
       <Filter>Main\pch</Filter>
     </ClCompile>
-    <ClCompile Include="CoreTLS.cpp">
+    <ClCompile Include="Job\Job.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Job\JobQueue.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Job\JobSerializer.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\ThreadLocal\CoreTLS.cpp">
       <Filter>Main\ThreadLocal</Filter>
     </ClCompile>
-    <ClCompile Include="BufferReader.cpp">
-      <Filter>Utils\Buffer</Filter>
+    <ClCompile Include="Memory\Pool\MemoryPool.cpp">
+      <Filter>Memory\Pool</Filter>
     </ClCompile>
-    <ClCompile Include="BufferWriter.cpp">
-      <Filter>Utils\Buffer</Filter>
+    <ClCompile Include="Memory\Pool\ObjectPool.cpp">
+      <Filter>Memory\Pool</Filter>
     </ClCompile>
-    <ClCompile Include="Job.cpp">
-      <Filter>Job</Filter>
+    <ClCompile Include="Memory\Allocator\Allocator.cpp">
+      <Filter>Memory\Allocator</Filter>
     </ClCompile>
-    <ClCompile Include="JobQueue.cpp">
-      <Filter>Job</Filter>
+    <ClCompile Include="Memory\MemoryManager.cpp">
+      <Filter>Memory</Filter>
     </ClCompile>
-    <ClCompile Include="JobSerializer.cpp">
-      <Filter>Job</Filter>
+    <ClCompile Include="Memory\RefCounter.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\BufferReader.cpp">
+      <Filter>Utils\Buffer\Recv</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\RecvBuffer.cpp">
+      <Filter>Utils\Buffer\Recv</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\BufferWriter.cpp">
+      <Filter>Utils\Buffer\Send</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\SendBuffer.cpp">
+      <Filter>Utils\Buffer\Send</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\DeadLockProfiler.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\Lock.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\ThreadManager.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Session\Session.cpp">
+      <Filter>Network\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Timer\Timer.cpp">
+      <Filter>Network\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Acceptor.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\NetAddress.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\NetworkCore.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\Service.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\SocketUtils.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Log\Logger.cpp">
+      <Filter>Utils\Logger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

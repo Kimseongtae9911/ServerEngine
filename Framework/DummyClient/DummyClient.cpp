@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
-#include "Service.h"
-#include "ThreadManager.h"
-#include "BufferReader.h"
+#include "../ServerCore/Network/Service.h"
+#include "../ServerCore/Thread/ThreadManager.h"
+#include "../ServerCore/Utils/Buffer/BufferReader.h"
 #include "ServerPacketHandler.h"
 
 using boost::asio::ip::tcp;
@@ -36,7 +36,7 @@ public:
         PacketSessionRef session = GetPacketSessionRef();
         PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
 
-        ServerPacketHandler::HandlePacket(session, _buffer, _len);
+        ServerPacketHandler::HandlePacket(session, _buffer);
     }
 
     void OnSendPacket(int32 _len) override

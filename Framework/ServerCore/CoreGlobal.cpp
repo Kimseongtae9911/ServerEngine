@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CoreGlobal.h"
-#include "ThreadManager.h"
-#include "DeadLockProfiler.h"
+#include "Thread/ThreadManager.h"
+#include "Thread/DeadLockProfiler.h"
 
 ThreadManager* GThreadManager = nullptr;
 MemoryManager* GMemoryManager = nullptr;

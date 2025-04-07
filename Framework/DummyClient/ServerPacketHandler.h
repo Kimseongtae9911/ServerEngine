@@ -32,7 +32,7 @@ public:
 		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_S_CHAT, _session, _buffer, _len; };
 	}
 
-	static bool HandlePacket(PacketSessionRef& _session, uint8* _buffer)
+	static void HandlePacket(PacketSessionRef& _session, uint8* _buffer)
 	{
 		PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
 		GPacketQueue->PushJob(_session, header);

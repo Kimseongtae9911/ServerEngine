@@ -51,6 +51,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -163,74 +164,152 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Acceptor.h" />
-    <ClInclude Include="Allocator.h" />
-    <ClInclude Include="BufferReader.h" />
-    <ClInclude Include="BufferWriter.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="CoreGlobal.h" />
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="CorePch.h" />
-    <ClInclude Include="CoreTLS.h" />
-    <ClInclude Include="DeadLockProfiler.h" />
-    <ClInclude Include="ErrorCode.h" />
-    <ClInclude Include="Job.h" />
-    <ClInclude Include="JobQueue.h" />
-    <ClInclude Include="JobSerializer.h" />
-    <ClInclude Include="Lock.h" />
-    <ClInclude Include="Logger.h" />
-    <ClInclude Include="MemoryManager.h" />
-    <ClInclude Include="MemoryPool.h" />
-    <ClInclude Include="NetAddress.h" />
-    <ClInclude Include="NetworkCore.h" />
-    <ClInclude Include="ObjectPool.h" />
-    <ClInclude Include="packet.h" />
+    <ClInclude Include="Job\Job.h" />
+    <ClInclude Include="Job\JobQueue.h" />
+    <ClInclude Include="Job\JobSerializer.h" />
+    <ClInclude Include="Memory\Allocator\Allocator.h" />
+    <ClInclude Include="Memory\MemoryManager.h" />
+    <ClInclude Include="Memory\Pool\MemoryPool.h" />
+    <ClInclude Include="Memory\Pool\ObjectPool.h" />
+    <ClInclude Include="Memory\RefCounter.h" />
+    <ClInclude Include="Network\Acceptor.h" />
+    <ClInclude Include="Network\NetAddress.h" />
+    <ClInclude Include="Network\NetworkCore.h" />
+    <ClInclude Include="Network\Packet\packet.h" />
+    <ClInclude Include="Network\Service.h" />
+    <ClInclude Include="Network\Session\Session.h" />
+    <ClInclude Include="Network\SocketUtils.h" />
+    <ClInclude Include="Network\Timer\Timer.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="RecvBuffer.h" />
-    <ClInclude Include="RefCounter.h" />
-    <ClInclude Include="SendBuffer.h" />
-    <ClInclude Include="Service.h" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="Singleton.h" />
-    <ClInclude Include="SocketUtils.h" />
-    <ClInclude Include="ThreadManager.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="TypeCast.h" />
+    <ClInclude Include="Thread\DeadLockProfiler.h" />
+    <ClInclude Include="Thread\Lock.h" />
+    <ClInclude Include="Thread\ThreadLocal\CoreTLS.h" />
+    <ClInclude Include="Thread\ThreadManager.h" />
     <ClInclude Include="Types.h" />
+    <ClInclude Include="Utils\Buffer\BufferReader.h" />
+    <ClInclude Include="Utils\Buffer\BufferWriter.h" />
+    <ClInclude Include="Utils\Buffer\RecvBuffer.h" />
+    <ClInclude Include="Utils\Buffer\SendBuffer.h" />
+    <ClInclude Include="Utils\Common\Singleton.h" />
+    <ClInclude Include="Utils\Common\TypeCast.h" />
+    <ClInclude Include="Utils\Enum\ErrorCode.h" />
+    <ClInclude Include="Utils\Log\Logger.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Acceptor.cpp" />
-    <ClCompile Include="Allocator.cpp" />
-    <ClCompile Include="BufferReader.cpp" />
-    <ClCompile Include="BufferWriter.cpp" />
-    <ClCompile Include="CoreGlobal.cpp" />
-    <ClCompile Include="CorePch.cpp" />
-    <ClCompile Include="CoreTLS.cpp" />
-    <ClCompile Include="DeadLockProfiler.cpp" />
-    <ClCompile Include="Job.cpp" />
-    <ClCompile Include="JobQueue.cpp" />
-    <ClCompile Include="JobSerializer.cpp" />
-    <ClCompile Include="Lock.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="MemoryManager.cpp" />
-    <ClCompile Include="MemoryPool.cpp" />
-    <ClCompile Include="NetAddress.cpp" />
-    <ClCompile Include="NetworkCore.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
+    <ClCompile Include="CoreGlobal.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="CorePch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Job\Job.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Job\JobQueue.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Job\JobSerializer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Memory\Allocator\Allocator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Memory\Pool\MemoryPool.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Memory\Pool\ObjectPool.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Memory\RefCounter.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Network\Acceptor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Network\NetAddress.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Network\NetworkCore.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Network\Service.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Network\Session\Session.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Network\SocketUtils.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Network\Timer\Timer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RecvBuffer.cpp" />
-    <ClCompile Include="RefCounter.cpp" />
-    <ClCompile Include="SendBuffer.cpp" />
-    <ClCompile Include="Service.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="SocketUtils.cpp" />
-    <ClCompile Include="ThreadManager.cpp" />
-    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Thread\DeadLockProfiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Thread\Lock.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Thread\ThreadLocal\CoreTLS.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Thread\ThreadManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\BufferReader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\BufferWriter.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\RecvBuffer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utils\Buffer\SendBuffer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Utils\Log\Logger.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
