@@ -1,8 +1,4 @@
 #include "../pch.h"
-#include "ThreadManager.h"
-#include "ThreadLocal/CoreTLS.h"
-#include "../CoreGlobal.h"
-#include "../Job/JobSerializer.h"
 
 ThreadManager::ThreadManager()
 {

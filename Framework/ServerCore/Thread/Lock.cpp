@@ -1,7 +1,4 @@
 #include "../pch.h"
-#include "Lock.h"
-#include "ThreadLocal/CoreTLS.h"
-#include "DeadLockProfiler.h"
 
 void Lock::WriteLock(const std::string _name)
 {

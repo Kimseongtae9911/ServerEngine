@@ -1,6 +1,4 @@
 #include "../../pch.h"
-#include "Allocator.h"
-#include "../MemoryManager.h"
 
 void* BaseAllocator::Alloc(int32 _size)
 {

@@ -63,6 +63,8 @@ class PacketSession;
 // todo: 공통 잡디스패쳐를 만들기, PacketDispatcher는 전역으로 사용중이라서 session.h도 모두 include가 필요함
 class PacketDispatcher
 {
+	using accessor = StCHMap<int32, PacketSessionRef>::accessor;
+
 public:
 	void PushJob(PacketSessionRef _session, PacketHeader* _header);
 
@@ -75,7 +77,7 @@ public:
 
 private:
 	JobQueue<PacketSessionRef> m_jobQueue;
-	StCUMap<int32, PacketSessionRef> m_sessionContainer;
+	StCHMap<int32, PacketSessionRef> m_sessionContainer;	
 };
 
 using PacketHandlerFunc = std::function<bool(PacketSessionRef&, uint8*, int32)>;

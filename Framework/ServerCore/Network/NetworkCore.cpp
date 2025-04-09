@@ -1,7 +1,4 @@
 #include "../pch.h"
-#include "NetworkCore.h"
-#include "../Thread/ThreadManager.h"
-#include "Service.h"
 
 NetworkCore::NetworkCore()
 {

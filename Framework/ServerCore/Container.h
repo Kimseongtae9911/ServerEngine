@@ -13,6 +13,7 @@
 #include <unordered_set>
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_unordered_map.h>
+#include <tbb/concurrent_hash_map.h>
 
 /*
 	STL 컨테이너들을 allocator를 사용하도록 재정의
@@ -58,3 +59,6 @@ using StUSet = std::unordered_set<Key, Hasher, KeyEq, StlAllocator<Key>>;
 
 template<typename Key, typename Type, typename Hasher = std::hash<Key>, typename KeyEq = std::equal_to<Key>>
 using StCUMap = tbb::concurrent_unordered_map<Key, Type, Hasher, KeyEq, StlAllocator<std::pair<const Key, Type>>>;
+
+template<typename Key, typename Type, typename Hasher = tbb::tbb_hash_compare<Key>>
+using StCHMap = tbb::concurrent_hash_map<Key, Type, Hasher, StlAllocator<std::pair<const Key, Type>>>;

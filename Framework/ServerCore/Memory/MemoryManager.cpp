@@ -1,6 +1,4 @@
 #include "../pch.h"
-#include "MemoryManager.h"
-#include "Pool/MemoryPool.h"
 
 MemoryManager::MemoryManager()
 {
@@ -16,6 +14,7 @@ MemoryManager::MemoryManager()
 			++tableIndex;
 		}
 	}
+	size -= 32;
 
 	for (; size <= 2048; size += 128) {
 		MemoryPool* pool = new MemoryPool(size);
@@ -26,6 +25,7 @@ MemoryManager::MemoryManager()
 			++tableIndex;
 		}
 	}
+	size -= 128;
 
 	for (; size <= 4096; size += 256) {
 		MemoryPool* pool = new MemoryPool(size);
