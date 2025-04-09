@@ -1,7 +1,7 @@
 #pragma once
 
 class Service;
-
+ 
 class Session : public std::enable_shared_from_this<Session>
 {
 	friend class Acceptor;
@@ -28,6 +28,8 @@ public:
 
 	void SetService(Service* _service) { m_service = _service; }
 	NetAddress GetNetAddress() const { return NetAddress(m_socket.remote_endpoint()); }
+
+	bool IsDisconnected() { return m_isDisconnected; }
 
 	virtual void OnTimer();
 
@@ -59,14 +61,15 @@ protected:
 class PacketSession : public Session
 {
 public:
-	PacketSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) 
-	{
-		m_packetQueue.Init(GetPacketSessionRef());
-	}
+	PacketSession(tcpSocket _socket, boost::asio::io_context& _context) : Session(std::move(_socket), _context) {}
 	virtual ~PacketSession() {}
+
+	void InitializeQueue() { m_packetQueue.Init(GetPacketSessionRef()); }
 
 	PacketSessionRef	GetPacketSessionRef() { return static_pointer_cast<PacketSession>(shared_from_this()); }
 	void PushHandler(PacketHeader* _packet) { m_packetQueue.PushJob(_packet); }
+
+	void ProcessPacket() { m_packetQueue.ProcessJob(); }
 
 private:
 	SessionQueue m_packetQueue;

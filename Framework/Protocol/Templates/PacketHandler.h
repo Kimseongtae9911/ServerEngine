@@ -27,21 +27,25 @@ public:
 		}
 
 {%- for pkt in parser.recv_pkt %}
-		GPacketHandler[PKT_{{pkt.name}}] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_{{pkt.name}}, _session, _buffer, _len; };
+		GPacketHandler[PKT_{{pkt.name}}] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlePacket<Protocol::{{pkt.name}}>(Handler_{{pkt.name}}, _session, _buffer, _len); };
 {%- endfor %}
-	}
-
-	static void HandlePacket(PacketSessionRef& _session, uint8* _buffer)
-	{
-		PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
-		GPacketQueue->PushJob(_session, header);
-	}
+	}	
 
 {%- for pkt in parser.send_pkt %}
 	static SendBufRef MakeSendBuffer(Protocol::{{pkt.name}}& _pkt) { return MakeSendBuffer(_pkt, PKT_{{pkt.name}}); }
 {%- endfor %}
 
 private:
+	template<class PacketType, class ProcessFunc>
+	static bool HandlePacket(ProcessFunc _func, PacketSessionRef& _session, uint8* _buffer, int32 _len)
+	{
+		PacketType pkt;
+		if (false == pkt.ParseFromArray(_buffer + sizeof(PacketHeader), _len - sizeof(PacketHeader)))
+			return false;
+
+		return _func(_session, pkt);
+	}
+
 	template<class T>
 	static SendBufRef MakeSendBuffer(T& _pkt, uint16 _pktId)
 	{

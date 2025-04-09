@@ -64,13 +64,7 @@ class PacketSession;
 class PacketDispatcher
 {
 public:
-	void PushJob(PacketSessionRef _session, PacketHeader* _header)
-	{
-		// _session에 pkt를 pushJob
-		//_session->PushHandler(_header);
-
-		m_jobQueue.PushJob(_session);
-	}
+	void PushJob(PacketSessionRef _session, PacketHeader* _header);
 
 	void PushJob(PacketSessionRef _session)
 	{
@@ -112,7 +106,7 @@ public:
 			if (m_jobQueue.Pop(header))
 			{
 				uint8* buffer = reinterpret_cast<uint8*>(header);
-				GPacketHandler[header->protocol](sessionRef, buffer, header->size);
+				bool ret = GPacketHandler[header->protocol](sessionRef, buffer, header->size);
 			}
 		}
 

@@ -33,10 +33,10 @@ public:
 
     void ParsePacket(uint8* _buffer, int32 _len) override
     {
-        PacketSessionRef session = GetPacketSessionRef();
+        PacketSessionRef session = GetPacketSessionRef();        
         PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
 
-        ServerPacketHandler::HandlePacket(session, _buffer);
+        GPacketQueue->PushJob(session, header);
     }
 
     void OnSendPacket(int32 _len) override
@@ -57,7 +57,7 @@ int main()
         [](tcpSocket _socket, boost::asio::io_context& _context) {
             return CreateSharedObj<ServerSession>(std::move(_socket), _context);
         },
-        100	// Max Session Count (todo: 구현해야함)
+        1	// Max Session Count (todo: 구현해야함)
     );
 
     if (false == service->ServiceStart(context))

@@ -18,10 +18,18 @@ void NetworkCore::RunObject(std::shared_ptr<Service> _service, std::shared_ptr<T
 	m_timer = std::move(_timer);
 	m_timer->SetService(_service.get());
 
-	for (int32 i = 0; i < 6; ++i) {
+	//todo: 스레드 개수 임의 지정
+	for (int32 i = 0; i < 3; ++i) {
 		GThreadManager->RunThreads([this]() {
 			CLInfo("io thread start. ThreadId={}", LThreadId);
 			m_context.run(); 
+			});
+	}
+
+	for (int32 i = 0; i < 1; ++i) {
+		GThreadManager->RunThreads([this]() {
+			CLInfo("worker thread start. ThreadId={}", LThreadId);
+			GPacketQueue->ProcessJob();
 			});
 	}
 

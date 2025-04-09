@@ -27,21 +27,25 @@ public:
 		{
 			GPacketHandler[i] = Handler_INVALID;
 		}
-		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_S_LOGIN, _session, _buffer, _len; };
-		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_S_ENTER_GAME, _session, _buffer, _len; };
-		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return Handler_S_CHAT, _session, _buffer, _len; };
-	}
-
-	static void HandlePacket(PacketSessionRef& _session, uint8* _buffer)
-	{
-		PacketHeader* header = reinterpret_cast<PacketHeader*>(_buffer);
-		GPacketQueue->PushJob(_session, header);
+		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlePacket<Protocol::S_LOGIN>(Handler_S_LOGIN, _session, _buffer, _len); };
+		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlePacket<Protocol::S_ENTER_GAME>(Handler_S_ENTER_GAME, _session, _buffer, _len); };
+		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& _session, uint8* _buffer, int32 _len) {return HandlePacket<Protocol::S_CHAT>(Handler_S_CHAT, _session, _buffer, _len); };
 	}
 	static SendBufRef MakeSendBuffer(Protocol::C_LOGIN& _pkt) { return MakeSendBuffer(_pkt, PKT_C_LOGIN); }
 	static SendBufRef MakeSendBuffer(Protocol::C_ENTER_GAME& _pkt) { return MakeSendBuffer(_pkt, PKT_C_ENTER_GAME); }
 	static SendBufRef MakeSendBuffer(Protocol::C_CHAT& _pkt) { return MakeSendBuffer(_pkt, PKT_C_CHAT); }
 
 private:
+	template<class PacketType, class ProcessFunc>
+	static bool HandlePacket(ProcessFunc _func, PacketSessionRef& _session, uint8* _buffer, int32 _len)
+	{
+		PacketType pkt;
+		if (false == pkt.ParseFromArray(_buffer + sizeof(PacketHeader), _len - sizeof(PacketHeader)))
+			return false;
+
+		return _func(_session, pkt);
+	}
+
 	template<class T>
 	static SendBufRef MakeSendBuffer(T& _pkt, uint16 _pktId)
 	{

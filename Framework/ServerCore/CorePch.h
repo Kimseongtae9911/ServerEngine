@@ -40,6 +40,7 @@
 #include "Network/Acceptor.h"
 #include "Network/Service.h"
 #include "Network/Timer/Timer.h"
+#include "Network/NetworkCore.h"
 
 #include "Memory/RefCounter.h"
 #include "Memory/MemoryManager.h"
